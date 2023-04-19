@@ -1,0 +1,270 @@
+var style_user = null;
+
+var default_family = null;
+var default_size = null;
+var default_color = null;
+var my_name_color = null;
+var bg_color = "";
+
+var fs = 0;
+var cs = false;
+
+function createCookie(name,value,days) {
+	if (days) {
+		var date = new Date();
+		date.setTime(date.getTime()+(days*24*60*60*1000));
+		var expires = "; expires="+date.toGMTString();
+	}
+	else var expires = "";
+	document.cookie = name+"="+value+expires+"; path=/";
+}
+
+function eraseCookie(name) {
+	createCookie(name,"",-1);
+}
+
+
+function init()
+{
+    if (document.getElementById("chatcont").addEventListener)
+        document.getElementById("chatcont").addEventListener('DOMSubtreeModified', itemAdded, false);
+    else if (document.getElementById("chatcont").attachEvent)
+        document.getElementById("chatcont").attachEvent('DOMSubtreeModified', itemAdded);
+
+    window.onunload = unset;
+    window.onmousewheel = wheel;
+    document.getElementById("chatcont").onmousedown = scrollerdown;
+    document.getElementById("chatcont").onmouseup = scrollerup;
+
+    var str = getCookie("usFontSet");
+
+    if (str != null)
+    {
+        str = str.split("&");
+
+        for (var i = 0; i < str.length; i++)
+        {
+            var splitter = str[i].split("=");
+
+            if (splitter.length == 2)
+            {
+                switch (splitter[0])
+                {
+                    case "Fam":
+                        default_family = splitter[1];
+                        document.body.style.fontFamily = default_family;
+                        break;
+
+                    case "Siz":
+                        default_size = splitter[1] + "pt";
+                        fs = parseInt(parseFloat(splitter[1]));
+                        document.body.style.fontSize = default_size;
+                        break;
+
+                    case "Col":
+                        default_color = splitter[1];
+                        break;
+
+                    case "BkCol":
+                        bg_color = splitter[1];
+                        break;
+
+                    case "NCol": // name color, maybe use in new cbot?
+                        my_name_color = splitter[1];
+                        break;
+                }
+            }
+        }
+
+        if (default_family != null && default_color != null)
+        {
+            var upload_str = (default_family + "\0" + default_color);
+
+            if (my_name_color != null)
+                upload_str += ("\0" + my_name_color);
+
+            upload_str = encodeURIComponent(upload_str);
+            var ajax = new Ajax();
+            ajax.download("font.htm?n=" + encodeURIComponent(my_username) + "&f=" + upload_str + "&t=" + new Date().getTime());
+        }
+    }
+}
+
+function scrollerdown(e)
+{
+    if (e.button == 0)
+        cs = true;
+}
+
+function scrollerup() { cs = false; }
+
+function wheel()
+{
+    if (!cs)
+        return;
+
+    var d = 0;
+    var e = window.event;
+
+    if (e.wheelDelta)
+        d = e.wheelDelta / 120;
+
+    if (d != 0)
+    {
+        if (d > 0)
+        {
+            fs++;
+            document.body.style.fontSize = (fs + "pt");
+        }
+        else
+        {
+            fs--;
+            document.body.style.fontSize = (fs + "pt");
+        }
+
+        if (event.preventDefault)
+            event.preventDefault();
+
+        event.returnValue = false;
+    }
+}
+
+function getCookie(c_name)
+{
+    var i, x, y, ARRcookies = document.cookie.split(";");
+
+    for (i = 0; i < ARRcookies.length; i++)
+    {
+        x = ARRcookies[i].substr(0, ARRcookies[i].indexOf("="));
+        y = ARRcookies[i].substr(ARRcookies[i].indexOf("=") + 1);
+        x = x.replace(/^\s+|\s+$/g, "");
+
+        if (x == c_name)
+        {
+            return unescape(y);
+        }
+    }
+
+    return null;
+}
+
+function unset()
+{
+    if (document.getElementById("chatcont").removeEventListener)
+        document.getElementById("chatcont").removeEventListener('DOMSubtreeModified', itemAdded, false);
+    else if (document.getElementById("chatcont").detachEvent)
+        document.getElementById("chatcont").detachEvent('DOMSubtreeModified', itemAdded);
+}
+
+function setUserStyle()
+{
+    try
+    {
+        var obj = document.getElementById("chatcont");
+        obj = obj.lastChild.firstChild;
+
+        if (obj.nodeName == "INPUT")
+            if (obj.type == "hidden")
+            {
+                obj = obj.value.toString();
+
+                if (obj.length > 0)
+                {
+                    obj = decodeURIComponent(obj);
+                    obj = JSON.parse(obj);
+                    style_user = obj;
+                    return true;
+                }
+            }
+    }
+    catch (ex) { }
+
+    return false;
+}
+
+function itemAdded(e)
+{
+    if (e.target.id == "chatcont")
+    {
+        if (setUserStyle())
+            return;
+
+        var style_now = null;
+
+        if (style_user != null)
+            style_now = style_user;
+
+        if (style_now != null)
+        {
+            var item = document.getElementById("chatcont").lastChild;
+            var spans = item.getElementsByTagName("span");
+
+            if (spans.length > 0)
+            {
+                if (style_now.isEmote)
+                {
+                    var text_span = spans[0];
+
+                    if (style_now.tc != "")
+                        if (bg_color != style_now.tc)
+                            text_span.style.color = style_now.tc;
+
+                    if (style_now.ff != "")
+                        item.style.fontFamily = style_now.ff;
+                }
+                else if (spans.length > 1)
+                {
+                    var name_span = spans[0];
+
+                    if (style_now.nc != "")
+                        if (bg_color != style_now.nc)
+                            name_span.style.color = style_now.nc;
+
+                    if (style_now.ff != "")
+                        item.style.fontFamily = style_now.ff;
+
+                    var text_span = spans[1];
+
+                    if (style_now.tc != "")
+                        if (bg_color != style_now.tc)
+                            text_span.style.color = style_now.tc;
+                }
+            }
+
+            style_user = null;
+        }
+    }
+}
+
+function Ajax()
+{
+    this.svc = null;
+    this.oncomplete = null;
+
+    try { this.svc = new XMLHttpRequest(); }
+    catch (e)
+    {
+        try { this.svc = new ActiveXObject("Msxml2.XMLHTTP"); }
+        catch (e)
+        {
+            try { this.svc = new ActiveXObject("Microsoft.XMLHTTP"); }
+            catch (e) { }
+        }
+    }
+
+    this.download = function (url)
+    {
+        var tmp = this;
+
+        this.svc.onreadystatechange = function ()
+        {
+            if (tmp.svc.readyState == 4)
+                if (tmp.svc.status == 200)
+                    if (tmp.oncomplete != null)
+                        tmp.oncomplete(tmp.svc.responseText);
+        }
+
+        this.svc.open("GET", url, true);
+        this.svc.send();
+    }
+}
