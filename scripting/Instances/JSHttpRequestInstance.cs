@@ -133,7 +133,10 @@ namespace scripting.Instances
                     if (!String.IsNullOrEmpty(this.Params) && this._method == "post")
                     {
                         byte[] p = this.UTF ? Encoding.UTF8.GetBytes(this.Params) : Encoding.Default.GetBytes(this.Params);
-                        request.ContentType = "application/x-www-form-urlencoded";
+                        if (request.Headers["ContentType"] == null)
+                            request.ContentType = "application/x-www-form-urlencoded";
+                        else
+                            request.ContentType = request.Headers["ContentType"];
                         request.ContentLength = p.Length;
 
                         using (Stream stream = request.GetRequestStream())
@@ -153,7 +156,7 @@ namespace scripting.Instances
                     response.Close();
                     result.Data = use_utf ? Encoding.UTF8.GetString(bytes_in.ToArray()) : Encoding.Default.GetString(bytes_in.ToArray());
                 }
-                catch { }
+                catch {}
 
                 ScriptManager.Callbacks.Enqueue(result);
                 this.busy = false;

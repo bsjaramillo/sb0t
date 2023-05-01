@@ -35,7 +35,7 @@ namespace core.ib0t
                 try
                 {
                     StringBuilder sb = new StringBuilder();
-                    sb.Append("local=" + Settings.LocalIP);
+                    sb.Append("local="+Settings.LocalIP);
                     sb.Append("&port=" + Settings.Port);
                     sb.Append("&name=" + Uri.EscapeDataString(Settings.Name));
                     sb.Append("&topic=" + Uri.EscapeDataString(Settings.Topic));
