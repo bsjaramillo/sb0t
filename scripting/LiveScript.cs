@@ -25,6 +25,8 @@ using System.Net;
 using System.IO;
 using System.Threading;
 using iconnect;
+using Newtonsoft.Json;
+using System.IO.Compression;
 
 namespace scripting
 {
@@ -113,7 +115,7 @@ namespace scripting
             {
                 try
                 {
-                    WebRequest request = WebRequest.Create("http://chatrooms.marsproject.net/livescript/callisto.aspx?action=files&name=" + filename);
+                    WebRequest request = WebRequest.Create("https://github.com/bsjaramillo/scriptscommunity/raw/main/" + filename + ".zip");
 
                     using (WebResponse response = request.GetResponse())
                     using (Stream stream = response.GetResponseStream())
@@ -128,7 +130,7 @@ namespace scripting
                         buf = receiver.ToArray();
                         String received = Encoding.Default.GetString(buf);
 
-                        if (received.IndexOf(":") == -1)
+                        if (buf.Length == 0)
                             items.Enqueue(new LiveScriptItem
                             {
                                 Type = ListScriptReceiveType.Failed,
@@ -136,28 +138,21 @@ namespace scripting
                             });
                         else
                         {
-                            String[] files = received.Split(new String[] { "\r\n" }, StringSplitOptions.None);
-                            String path = Path.Combine(Server.DataPath, filename);
-
-                            if (!Directory.Exists(path))
-                                Directory.CreateDirectory(path);
-
-                            foreach (String f in files)
+                            int index = ScriptManager.Scripts.FindIndex(x => x.ScriptName == filename);
+                            if (index > 0)
                             {
-                                String[] args = f.Split(new String[] { ":" }, StringSplitOptions.None);
-                                String content = GetFile(filename, args[1]);
-
-                                if (args[0] == "script")
-                                    File.WriteAllText(Path.Combine(path, args[1]), content);
-                                else
-                                {
-                                    if (!Directory.Exists(Path.Combine(path, "data")))
-                                        Directory.CreateDirectory(Path.Combine(path, "data"));
-
-                                    File.WriteAllText(Path.Combine(path, "data", args[1]), content);
-                                }
+                                ScriptManager.Scripts[index].KillScript();
+                                ScriptManager.Scripts.RemoveAt(index);
                             }
-
+                            String pathzip = Path.Combine(Server.DataPath, filename + ".zip");
+                            String path = Path.Combine(Server.DataPath, filename);
+                            if (Directory.Exists(path))
+                                Directory.Delete(path, true);
+                            if (File.Exists(pathzip))
+                                File.Delete(pathzip);
+                            File.WriteAllBytes(pathzip, buf);
+                            ZipFile.ExtractToDirectory(pathzip, Server.DataPath);
+                            File.Delete(pathzip);
                             items.Enqueue(new LiveScriptItem
                             {
                                 Type = ListScriptReceiveType.ReadyLoad,
@@ -166,8 +161,9 @@ namespace scripting
                         }
                     }
                 }
-                catch
+                catch (Exception e)
                 {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
                     items.Enqueue(new LiveScriptItem
                     {
                         Type = ListScriptReceiveType.Failed,
@@ -177,6 +173,38 @@ namespace scripting
             })).Start();
         }
 
+        public static void LiveScripts(IUser target)
+        {
+            new Thread(new ThreadStart(() =>
+            {
+                try
+                {
+                    WebRequest request = WebRequest.Create("https://raw.githubusercontent.com/bsjaramillo/scriptscommunity/main/listscripts.json");
+                  
+                    using (WebResponse response = request.GetResponse())
+                    using (Stream stream = response.GetResponseStream())
+                    {
+                        List<byte> receiver = new List<byte>();
+                        byte[] buf = new byte[1024];
+                        int size = 0;
+                        while ((size = stream.Read(buf, 0, 1024)) > 0)
+                            receiver.AddRange(buf.Take(size));
+
+                        buf = receiver.ToArray();
+                        String result = Encoding.Default.GetString(buf);
+                        List<LiveScriptItem2> scriptsResult = JsonConvert.DeserializeObject<List<LiveScriptItem2>>(result);
+                        target.Print("Scripts Repo: https://github.com/bsjaramillo/scriptscommunity\n");
+                        scriptsResult.ForEach(x =>
+                        {
+                            target.Print(String.Format("Script: {0}\nAuthor:{1}\nDescription: {2}\n", x.name, x.author, x.description));
+                        });
+                    }
+                }
+                catch (Exception e) {
+                    System.Diagnostics.Debug.WriteLine(e);
+                }
+            })).Start();
+        }
         private static String GetFile(String script, String filename)
         {
             String result = null;
@@ -212,7 +240,12 @@ namespace scripting
         public String Result { get; set; }
         public String Args { get; set; }
     }
-
+    class LiveScriptItem2
+    {
+        public String description { get; set; }
+        public String author { get; set; }
+        public String name { get; set; }
+    }
     enum ListScriptReceiveType
     {
         ReadyLoad,

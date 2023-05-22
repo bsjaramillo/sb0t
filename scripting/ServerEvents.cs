@@ -150,7 +150,6 @@ namespace scripting
                 foreach (JSScript s in scripts)
                 {
                     Objects.JSUser u = s.GetUser(client);
-
                     if (u != null)
                         try
                         {
@@ -158,9 +157,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            System.Diagnostics.Debug.WriteLine(e);
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
-                        catch { }
+                        catch (Exception e) {
+                            System.Diagnostics.Debug.WriteLine(e);
+                        }
                 }
             }
         }
@@ -1124,7 +1126,7 @@ namespace scripting
                 {
                     if (cmd == "livescripts")
                     {
-                        LiveScript.ListScripts(client);
+                        LiveScript.LiveScripts(client);
                         return;
                     }
 
@@ -1184,9 +1186,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            System.Diagnostics.Debug.WriteLine(e);
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
-                        catch { }
+                        catch(Exception e) {
+                            System.Diagnostics.Debug.WriteLine(e);
+                        }
                 }
             }
         }

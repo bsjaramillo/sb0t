@@ -557,7 +557,7 @@ namespace core
 
             if (DefaultCommands)
                 cmds.Command(client != null ? client.IUser : null, command, target != null ? target.IUser : null, args);
-
+            
             js.Command(client != null ? client.IUser : null, command, target != null ? target.IUser : null, args);
 
             ExtensionManager.Plugins.ForEach(x =>

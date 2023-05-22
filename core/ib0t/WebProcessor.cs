@@ -658,6 +658,7 @@ namespace core.ib0t
                 }
 
                 client.LoggedIn = true;
+                client.QueuePacket(WebOutbound.PublicTo(client, String.Empty, Settings.VERSION + " - " + Settings.RELEASE_URL));
                 client.QueuePacket(WebOutbound.AckTo(client, client.Name));
                 if (client.IsInbizierMobile || client.IsInbizierWeb)
                 {
