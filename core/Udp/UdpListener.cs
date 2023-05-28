@@ -173,7 +173,6 @@ namespace core.Udp
         private void Push(ulong time)
         {
             UdpNode node = UdpNodeManager.NextPusher(time);
-
             if (node != null)
                 this.SendDatagram(new UdpItem
                 {

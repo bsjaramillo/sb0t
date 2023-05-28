@@ -69,7 +69,6 @@ namespace core.Udp
             if (udp.Showing)
             {
                 UdpStats.SENDINFO++;
-
                 udp.SendDatagram(new UdpItem
                 {
                     Data = UdpOutbound.AckInfo(time),

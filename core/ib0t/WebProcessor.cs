@@ -687,8 +687,11 @@ namespace core.ib0t
 
                 if (ServerCore.Linker.Busy)
                     foreach (LinkLeaf.Leaf leaf in ServerCore.Linker.Leaves)
-                        leaf.Users.ForEachWhere(x => client.QueuePacket(WebOutbound.UserlistItemTo(client, x.Name, x.Level)),
-                            x => x.Vroom == client.Vroom && x.Link.Visible && !(client.IsInbizierWeb||client.IsInbizierMobile));
+                        leaf.Users.ForEachWhere(x => client.QueuePacket(
+                            client.IsInbizierWeb || client.IsInbizierMobile ?
+                            WebOutbound.UserInfoTo(x) :
+                            WebOutbound.UserlistItemTo(client, x.Name, x.Level)),
+                            x => x.Vroom == client.Vroom && x.Link.Visible);
 
                 client.QueuePacket(WebOutbound.UserlistEndTo(client));
                 client.QueuePacket(WebOutbound.UrlTo(client, Settings.Get<String>("link", "url"), Settings.Get<String>("text", "url")));
