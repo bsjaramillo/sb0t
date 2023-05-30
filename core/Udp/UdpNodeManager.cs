@@ -151,58 +151,40 @@ namespace core.Udp
             return false;
         }
 
-        private const String default_remote_cache_server = "https://ares.chat/servers.dat";
-
-
         private static void LoadDefaultList()
         {
             Nodes = new List<UdpNode>();
 
-            byte[] raw = null;
+            Nodes.Add(toUdpNode("3.9.177.74", 54321)); // AresChat
+            Nodes.Add(toUdpNode("72.88.244.38", 50000)); // Vicky's Hangout
+            Nodes.Add(toUdpNode("81.103.82.252", 37579)); // BATTS STEAKHOUSE
+            Nodes.Add(toUdpNode("87.211.177.199", 5287)); // MIXI - ROOM
+            Nodes.Add(toUdpNode("176.27.99.220", 46500)); // Ross / Milli's Bar and Cafe
 
-            // Always try and use the very latest node list, otherwise default to the one which comes with sb0t
-            try
+
+            // TODO(stuart) find a better way of accomplishing this, so we don't end up with a list of empty nodes...
+            /*using (FileStream fs = new FileStream("servers.dat", FileMode.Open, FileAccess.Read))
             {
-                WebRequest request = WebRequest.Create(default_remote_cache_server);
+                byte[] buffer = new byte[6];
 
-                using (WebResponse response = request.GetResponse())
-                using (Stream stream = response.GetResponseStream())
-                {
-                    List<byte> tmp = new List<byte>();
-                    int s = 0;
-                    byte[] btmp = new byte[1024];
-
-                    while ((s = stream.Read(btmp, 0, 1024)) > 0)
-                        tmp.AddRange(btmp.Take(s));
-
-                    raw = tmp.ToArray();
-                }
-            }
-            catch { }
-
-
-            if (raw == null) // unable to retrieve remote cache server so use the one in the installer
-                raw = File.ReadAllBytes("servers.dat");
-
-            if (raw != null)
-            {
-                List<byte> list = new List<byte>(raw);
-
-
-                while (list.Count >= 6)
+                while (fs.Read(buffer, 0, buffer.Length) == 6)
                 {
                     UdpNode node = new UdpNode();
-                    IPAddress ip = new IPAddress(list.GetRange(0, 4).ToArray());
-                    node.IP = ip;
-                    list.RemoveRange(0, 4);
-                    ushort port = BitConverter.ToUInt16(list.ToArray(), 0);
-                    node.Port = port;
-                    list.RemoveRange(0, 2);
+                    node.IP = new IPAddress(buffer.Take(4).ToArray());
+                    node.Port = BitConverter.ToUInt16(buffer.ToArray(), 4);
                     Nodes.Add(node);
                 }
-            }
+            }*/
 
             ServerCore.Log("default node list loaded");
+        }
+
+        public static UdpNode toUdpNode(String ip, ushort port)
+        {
+            UdpNode udpNode = new UdpNode();
+            udpNode.IP = IPAddress.Parse(ip);
+            udpNode.Port = port;
+            return udpNode;
         }
 
         public static UdpNode[] GetServers(int max_servers, ulong time)
