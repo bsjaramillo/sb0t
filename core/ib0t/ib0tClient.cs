@@ -349,7 +349,26 @@ namespace core.ib0t
             }
         }
 
-        public void Redirect(String hashlink) { }
+        public void Redirect(String hashlink) {
+            //redirect only to inbizio users
+            if (!(this.IsInbizierMobile || this.IsInbizierWeb))
+            {
+                return;
+            }
+            Room room = Hashlink.DecodeHashlink(hashlink);
+
+            if (room != null && this.Level == ILevel.Regular)
+            {
+                byte[] buf;
+
+                while (this.data_out.Count > 0)
+                    if (!this.data_out.TryDequeue(out buf))
+                        break;
+                
+                this.QueuePacket(WebOutbound.Redirect(this,room));
+                this.Disconnect();
+            }
+        }
         public void RestoreAvatar()
         {
             if (this.rest_av != null)

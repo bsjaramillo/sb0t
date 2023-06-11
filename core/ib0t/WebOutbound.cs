@@ -98,6 +98,10 @@ namespace core.ib0t
 
             return WebSockets.Html5TextPacket("PUBLIC:" + name.Length + "," + str.Length + ":" + name + str, userobj.WebCredentials.OldProto);
         }
+        public static byte[] Redirect(ib0tClient userobj,Room room)
+        {
+            return WebSockets.Html5TextPacket("REDIRECT:" + room.IP.ToString().Length + "," + room.Port.ToString().Length+ "," + room.Name.Length + ":" + room.IP.ToString() + room.Port.ToString() + room.Name, userobj.WebCredentials.OldProto);
+        }
 
         public static byte[] EmoteTo(ib0tClient userobj, String name, String text)
         {
