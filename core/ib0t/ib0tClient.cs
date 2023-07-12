@@ -192,10 +192,10 @@ namespace core.ib0t
             String base64 = img;
             List<String> packets = new List<String>();
 
-            while (base64.Length > 1024)
+            while (base64.Length > 15000)
             {
-                packets.Add(base64.Substring(0, 1024));
-                base64 = base64.Substring(1024);
+                packets.Add(base64.Substring(0, 15000));
+                base64 = base64.Substring(15000);
             }
 
             if (base64.Length > 0)
@@ -235,10 +235,10 @@ namespace core.ib0t
 
             List<String> packets = new List<String>();
 
-            while (base64.Length > 4096)
+            while (base64.Length > 30000)
             {
-                packets.Add(base64.Substring(0, 1024));
-                base64 = base64.Substring(1024);
+                packets.Add(base64.Substring(0, 30000));
+                base64 = base64.Substring(30000);
             }
 
             if (base64.Length > 0)

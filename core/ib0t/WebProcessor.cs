@@ -63,6 +63,15 @@ namespace core.ib0t
                 case "BUZZ":
                     Buzz(client, args);
                     break;
+                case "CUSTOM_DATA_HEAD":
+                    CustomDataHead(client, args);
+                    break;
+                case "CUSTOM_DATA_BODY_SCRIBBLE":
+                    CustomDataBody(client, args,"SCRIBBLE");
+                    break;
+                case "CUSTOM_DATA_BODY_AUDIO":
+                    CustomDataBody(client, args, "AUDIO");
+                    break;
                 case "LOGIN":
                     Login(client, args, time);
                     break;
@@ -111,6 +120,60 @@ namespace core.ib0t
             }
         }
 
+        private static Dictionary<String, CustomData> customData = new Dictionary<string, CustomData>();
+
+        private static void CustomDataHead(ib0tClient client, String packet)
+        {
+            String[] arg_items = GetArgItems(packet);
+            String size = arg_items[2];
+            String sender = arg_items[0];
+            String id = arg_items[1];
+            System.Diagnostics.Debug.WriteLine(size+sender+id);
+            if (customData.ContainsKey(id)) return;
+            CustomData newCustomDataHead = new CustomData();
+            newCustomDataHead.data = "";
+            newCustomDataHead.sender = sender;
+            newCustomDataHead.size = UInt16.Parse(size);
+            newCustomDataHead.count = 0;
+            customData.Add(id, newCustomDataHead);
+        }
+        private static void CustomDataBody(ib0tClient client, String packet, String type)
+        {
+            try
+            {
+                String[] arg_items = GetArgItems(packet);
+                String body = arg_items[1];
+                String id = arg_items[0];
+                if (!customData.ContainsKey(id)) return;
+                customData[id].data = customData[id].data + body;
+                customData[id].count++;
+                System.Diagnostics.Debug.WriteLine(customData[id].count);
+                if (customData[id].count == customData[id].size)
+                {
+                    SendCustomData(client, type, customData[id].toPacket());
+                    customData.Remove(id);
+                }
+            }
+            catch(Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e);
+            }
+            
+        }
+
+        private static void SendCustomData(ib0tClient client, String type,String packet)
+        {
+            System.Diagnostics.Debug.WriteLine(packet);
+            switch (type)
+            {
+                case "SCRIBBLE":
+                    Scribble(client,packet);
+                    break;
+                case "AUDIO":
+                    Audio(client, packet);
+                    break;
+            }
+        }
         private static void Lag(ib0tClient client, String args)
         {
             client.QueuePacket(WebOutbound.LagTo(client, args));
@@ -198,7 +261,6 @@ namespace core.ib0t
                                 x => x.LoggedIn && !x.Quarantined && x.Vroom == client.Vroom);
                     UserPool.AUsers.ForEachWhere(x => x.Scribble(Settings.Get<String>("bot"), data.Item1, data.Item3),
                                 x => x.LoggedIn && !x.Quarantined && x.Vroom == client.Vroom);
-
                     UserPool.WUsers.ForEachWhere(x => x.Scribble2(sender, text, height),
                     x => x.LoggedIn && x.Vroom == client.Vroom && !x.Quarantined && x.Extended);
                 }

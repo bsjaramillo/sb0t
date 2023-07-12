@@ -224,6 +224,7 @@
     <Compile Include="FilterImporter.cs" />
     <Compile Include="FloodControl.cs" />
     <Compile Include="FloodRecord.cs" />
+    <Compile Include="ib0t\CustomData.cs" />
     <Compile Include="IdleManager.cs" />
     <Compile Include="IgnoreManager.cs" />
     <Compile Include="LinkHub\HubOutbound.cs" />

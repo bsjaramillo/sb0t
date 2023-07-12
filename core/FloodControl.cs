@@ -53,6 +53,9 @@ namespace core
                 }
             }
 
+            if (msg == (TCPMsg)255)
+                return false;
+
             if (client.Level > ILevel.Regular)
                 return false;
 
