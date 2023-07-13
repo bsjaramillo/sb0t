@@ -53,7 +53,7 @@ namespace core
                 }
             }
 
-            if (msg == (TCPMsg)255)
+            if (msg == TCPMsg.MSG_CHAT_CLIENT_CUSTOM_DATA)
                 return false;
 
             if (client.Level > ILevel.Regular)
@@ -144,6 +144,12 @@ namespace core
 
                 case "PM":
                     return TCPMsg.MSG_CHAT_CLIENT_PVT;
+
+                case "CUSTOM_DATA_HEAD":
+                case "CUSTOM_DATA_BODY":
+                case "PM_CUSTOM_DATA_HEAD":
+                case "PM_CUSTOM_DATA_BODY":
+                    return TCPMsg.MSG_CHAT_CLIENT_CUSTOM_DATA;
 
                 default:
                     return (TCPMsg)255;

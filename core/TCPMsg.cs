@@ -120,6 +120,7 @@ namespace core
         // --- client will send when requirement changes (for example if you have a check-box to toggle blocking)
         MSG_CHAT_CLIENT_BLOCK_CUSTOMNAMES = 242, // 1 byte -> 0=no 1=yes
         
-        MSG_LINK_PROTO = 251
+        MSG_LINK_PROTO = 251,
+
     }
 }
