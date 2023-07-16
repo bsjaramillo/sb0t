@@ -51,7 +51,7 @@ namespace core.ib0t
                         client.Disconnect();
                         return;
                     }
-            System.Diagnostics.Debug.WriteLine(ident);
+            
             switch (ident)
             {
                 case "AVATAR":

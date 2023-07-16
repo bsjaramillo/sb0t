@@ -32,7 +32,7 @@ namespace core.ib0t
         }
         public static byte[] ServerInfo(ib0tClient userobj)
         {
-            return WebSockets.Html5TextPacket("SERVER_INFO:1:I" , userobj.WebCredentials.OldProto);
+            return WebSockets.Html5TextPacket("SERVER_INFO:2:II" , userobj.WebCredentials.OldProto);
         }
         public static byte[] BuzzTo(ib0tClient userobj,String target)
         {
@@ -160,7 +160,7 @@ namespace core.ib0t
 
         public static byte[] PmScribbleBlock(ib0tClient userobj,String sender, String text)
         {
-            return WebSockets.Html5TextPacket("PM_SCRIBBLE_BLOCK:"+sender.Length + text.Length + ":"+ sender + text, userobj.WebCredentials.OldProto);
+            return WebSockets.Html5TextPacket("PM_SCRIBBLE_BLOCK:"+sender.Length +","+ text.Length + ":"+ sender + text, userobj.WebCredentials.OldProto);
         }
 
         public static byte[] ScribbleSourceBlock(ib0tClient userobj, String text)
