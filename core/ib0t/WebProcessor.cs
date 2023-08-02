@@ -51,9 +51,9 @@ namespace core.ib0t
                         client.Disconnect();
                         return;
                     }
-            
             switch (ident)
             {
+                
                 case "AVATAR":
                     Avatar(client, args);
                     break;
@@ -169,7 +169,6 @@ namespace core.ib0t
             String size = arg_items[2];
             String target = arg_items[0];
             String id = arg_items[1];
-            System.Diagnostics.Debug.WriteLine(size+target+id);
             if (pmCustomData.ContainsKey(id)) return;
             PmCustomData newCustomDataHead = new PmCustomData();
             newCustomDataHead.data = "";

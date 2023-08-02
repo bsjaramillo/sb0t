@@ -225,7 +225,6 @@ namespace core.ib0t
                 packets.Add(base64);
 
             this.QueuePacket(WebOutbound.PmScribbleHead(this, sender, packets.Count, height));
-
             foreach (String str in packets)
                 this.QueuePacket(WebOutbound.PmScribbleBlock(this,sender, str));
         }
