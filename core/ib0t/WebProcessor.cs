@@ -131,7 +131,6 @@ namespace core.ib0t
             String size = arg_items[2];
             String sender = arg_items[0];
             String id = arg_items[1];
-            System.Diagnostics.Debug.WriteLine(size+sender+id);
             if (customData.ContainsKey(id)) return;
             CustomData newCustomDataHead = new CustomData();
             newCustomDataHead.data = "";

@@ -210,7 +210,8 @@ namespace core.ib0t
         {
             if (!this.Extended || !this.ProtoConnected)
                 return;
-
+            if (!(this.IsInbizierMobile || this.IsInbizierWeb))
+                return;
             String height = h.ToString();
             String base64 = img;
             List<String> packets = new List<String>();
@@ -275,6 +276,9 @@ namespace core.ib0t
         public void PmAudio(String sender, String base64)
         {
             if (!this.Extended || !this.ProtoConnected)
+                return;
+
+            if (!(this.IsInbizierMobile || this.IsInbizierWeb))
                 return;
 
             List<String> packets = new List<String>();
