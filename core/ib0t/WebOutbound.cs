@@ -40,7 +40,7 @@ namespace core.ib0t
         }
         public static byte[] PrivateTo(ib0tClient userobj, String name, String text)
         {
-            return WebSockets.Html5TextPacket("PM:" + name.Length + "," + text.Length + ",1" +":" + name + text + (userobj.IsInbizierWeb||userobj.IsInbizierMobile ?"1":"0") , userobj.WebCredentials.OldProto);
+            return WebSockets.Html5TextPacket("PM:" + name.Length + "," + text.Length +":" + name + text , userobj.WebCredentials.OldProto);
         }
 
         public static byte[] OfflineTo(ib0tClient userobj, String name)
