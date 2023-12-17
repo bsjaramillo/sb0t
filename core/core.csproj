@@ -253,7 +253,6 @@
     <Compile Include="FileBrowseProcessor.cs" />
     <Compile Include="Hashlink.cs" />
     <Compile Include="Helpers.cs" />
-    <Compile Include="ib0t\ChannelPusher.cs" />
     <Compile Include="ib0t\Html5RequestEventArgs.cs" />
     <Compile Include="ib0t\ib0tClient.cs" />
     <Compile Include="ib0t\WebOutbound.cs" />
@@ -327,6 +326,7 @@
     <EmbeddedResource Include="Resource1.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

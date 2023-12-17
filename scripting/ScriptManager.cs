@@ -22,6 +22,8 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
 using System.IO;
+using iconnect;
+
 
 namespace scripting
 {
@@ -173,9 +175,16 @@ namespace scripting
                     }
                     catch (Jurassic.JavaScriptException e)
                     {
+                        Server.Print(String.Format("Unable to run onLoad event in the script {0} \x06{1} - LineReference: {2}", script.ScriptName, e.Message, e.LineNumber));
                         ErrorDispatcher.SendError(script.ScriptName, e.Message, e.LineNumber);
                     }
-                    catch { }
+                    catch (Jurassic.Compiler.SyntaxErrorException e)
+                    {
+                        Server.Print(String.Format("Unable to load onLoad event in the script {0} \x06{1} - LineReference: {2}", script.ScriptName, e.Message, e.LineNumber));
+                        ErrorDispatcher.SendError(script.ScriptName, e.Message, e.LineNumber);
+                    }
+                    catch {
+                    }
 
                     if (update_autorun)
                         UpdateAutorun();

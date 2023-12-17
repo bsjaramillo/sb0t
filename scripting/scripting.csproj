@@ -89,6 +89,13 @@
     <Compile Include="JSGlobal.cs" />
     <Compile Include="JSScript.cs" />
     <Compile Include="LiveScript.cs" />
+    <Compile Include="LiveScriptAPIModels\ApiResponse.cs" />
+    <Compile Include="LiveScriptAPIModels\Author.cs" />
+    <Compile Include="LiveScriptAPIModels\InternalTracker.cs" />
+    <Compile Include="LiveScriptAPIModels\Owner.cs" />
+    <Compile Include="LiveScriptAPIModels\Permission.cs" />
+    <Compile Include="LiveScriptAPIModels\ReleaseResponse.cs" />
+    <Compile Include="LiveScriptAPIModels\Repository.cs" />
     <Compile Include="ObjectPrototypes\JSAvatarImage.cs" />
     <Compile Include="ObjectPrototypes\JSBannedUser.cs" />
     <Compile Include="ObjectPrototypes\JSChannelCollection.cs" />

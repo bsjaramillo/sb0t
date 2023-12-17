@@ -164,7 +164,6 @@ namespace core
 
             ulong last_update_check = 0;
             ulong fast_ping_timer = Time.Now;
-            ulong channel_push_timer = (Time.Now - 1200000);
             ulong reset_floods_timer = Time.Now;
             ulong room_search_timer = (Time.Now - 1800000);
             ulong connect_flood_expire = Time.Now + 300000;
@@ -225,11 +224,6 @@ namespace core
                 {
                     this.ServiceWebSockets(time);
 
-                    if (time > (channel_push_timer + 1200000))
-                    {
-                        channel_push_timer = time;
-                        ib0t.ChannelPusher.Push();
-                    }
                 }
 
                 if (time > (room_search_timer + 1800000))

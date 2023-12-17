@@ -142,15 +142,15 @@ namespace gui
             this.checkBox14.IsChecked = Settings.Get<bool>("reject_female");
             //unknown users
             this.checkBox16.IsChecked = Settings.Get<bool>("reject_unknown");
-            //ib0t push
-            String ib = Settings.Get<String>("url", "web");
-            if (String.IsNullOrEmpty(ib) || ib.ToLower().Contains("marsproject.net"))
+            //live script endpoint
+            String lse = Settings.Get<String>("url", "lse");
+            if (String.IsNullOrEmpty(lse))
             {
-                ib = "https://ares.chat/api/ib0t";
-                Settings.Set("url", "https://ares.chat/api/ib0t", "web");
+                lse = "http://198.58.100.116:3000/api/v1";
+                Settings.Set("url", lse, "lse");
             }
 
-            this.textBox5.Text = ib;
+            this.textBox5.Text = lse;
             //hide ips
             this.checkBox18.IsChecked = Settings.Get<bool>("hide_ips");
             //preferred language

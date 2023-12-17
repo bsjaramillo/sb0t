@@ -24,6 +24,8 @@ using System.Reflection;
 using Jurassic;
 using Jurassic.Library;
 using iconnect;
+using Jurassic.Compiler;
+using System.IO;
 
 namespace scripting
 {
@@ -34,7 +36,7 @@ namespace scripting
         public List<Objects.JSUser> local_users = new List<Objects.JSUser>();
         public List<Objects.JSLeaf> leaves = new List<Objects.JSLeaf>();
         public List<ulong> timer_idents = new List<ulong>();
-
+        private Dictionary<string, string> eventsDictionary;
         public JSScript(String name)
         {
             this.ScriptName = name;
@@ -106,6 +108,19 @@ namespace scripting
             events.AppendLine("function onLeafJoin(leaf) { }");
             events.AppendLine("function onLeafPart(leaf) { }");
             events.AppendLine("function onLinkedAdminDisabled(leaf, userobj) { }");
+            eventsDictionary = new Dictionary<string, string>();
+            string[] lines = events.ToString().Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string line in lines)
+            {
+                // Obtener el nombre de la función y el contenido
+                int startIndex = line.IndexOf("function ") + "function ".Length;
+                int endIndex = line.IndexOf("(");
+                string functionName = line.Substring(startIndex, endIndex - startIndex).Trim();
+                string functionContent = line.Trim();
+
+                // Agregar al Dictionary
+                eventsDictionary[functionName] = functionContent;
+            }
             this.JS.Evaluate(events.ToString());
         }
 
@@ -172,6 +187,12 @@ namespace scripting
             }
             catch (JavaScriptException e)
             {
+                Server.Print(String.Format("Unable to load script {0} \x06{1} - LineReference: {2}", this.ScriptName, e.Message, e.LineNumber));
+                ErrorDispatcher.SendError(this.ScriptName, e.Message, e.LineNumber);
+            }
+            catch (SyntaxErrorException e)
+            {
+                Server.Print(String.Format("Unable to load script {0} \x06{1} - LineReference: {2}", this.ScriptName, e.Message, e.LineNumber));
                 ErrorDispatcher.SendError(this.ScriptName, e.Message, e.LineNumber);
             }
             catch { }

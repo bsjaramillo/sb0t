@@ -52,17 +52,22 @@ namespace scripting.Statics
             {
                 String filename = a.ToString();
 
-                if (filename.Length > 1)
-                    if (bad_chars_script.Count<String>(x => filename.Contains(x)) == 0)
-                    {
-                        String path = Path.Combine(Server.DataPath, eng.UserData as string, "data", filename);
+                if (filename.Length > 1 && bad_chars_script.Count<String>(x => filename.Contains(x)) == 0)
+                {
+                    String path = Path.Combine(Server.DataPath, eng.UserData as string, "data", filename);
 
-                        try
-                        {
-                            return File.ReadAllText(path);
-                        }
-                        catch { }
+                    try
+                    {
+                        // Leer todas las líneas del archivo
+                        string[] lines = File.ReadAllLines(path);
+
+                        // Eliminar las líneas en blanco y unir el resultado
+                        string contentWithoutBlankLines = string.Join(Environment.NewLine, lines.Where(line => !string.IsNullOrWhiteSpace(line)));
+
+                        return contentWithoutBlankLines;
                     }
+                    catch { }
+                }
             }
 
             return null;
@@ -149,6 +154,41 @@ namespace scripting.Statics
                     }
                     catch { }
                 }
+
+            return false;
+        }
+
+        [JSFunction(Name = "appendLine", Flags = JSFunctionFlags.HasEngineParameter, IsWritable = false, IsEnumerable = true)]
+        public static bool JSAppendLine(ScriptEngine eng, object a, object b)
+        {
+            if (!(a is String || a is ConcatenatedString) || !(b is String || b is ConcatenatedString))
+                return false;
+
+            String file = a.ToString();
+            String script = eng.UserData as string;
+            String content = b.ToString();
+
+            if (file.Length > 1 && bad_chars_script.Count<String>(x => file.Contains(x)) == 0)
+            {
+                try
+                {
+                    String path = Path.Combine(Server.DataPath, eng.UserData as string, "data");
+
+                    if (!Directory.Exists(path))
+                        Directory.CreateDirectory(path);
+
+                    path = Path.Combine(Server.DataPath, eng.UserData as string, "data", file);
+
+                    // Agregar el contenido a una nueva línea
+                    content = content.TrimEnd('\r', '\n') + Environment.NewLine;
+
+                    using (StreamWriter stream = File.AppendText(path))
+                        stream.Write(content);
+
+                    return true;
+                }
+                catch { }
+            }
 
             return false;
         }

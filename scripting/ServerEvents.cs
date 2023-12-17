@@ -20,6 +20,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using iconnect;
 
 namespace scripting
@@ -56,6 +57,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onTimer event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onTimer event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -87,6 +94,12 @@ namespace scripting
                     }
                     catch (Jurassic.JavaScriptException e)
                     {
+                        Server.Print(String.Format("Unable to run onScribbleCheck event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                        ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                    }
+                    catch (Jurassic.Compiler.SyntaxErrorException e)
+                    {
+                        Server.Print(String.Format("Unable to run onScribbleCheck event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                         ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                     }
                     catch { }
@@ -114,6 +127,12 @@ namespace scripting
                     }
                     catch (Jurassic.JavaScriptException e)
                     {
+                        Server.Print(String.Format("Unable to run onJoinCheck event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                        ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                    }
+                    catch (Jurassic.Compiler.SyntaxErrorException e)
+                    {
+                        Server.Print(String.Format("Unable to run onJoinCheck event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                         ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                     }
                     catch { }
@@ -157,7 +176,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
-                            System.Diagnostics.Debug.WriteLine(e);
+                            Server.Print(String.Format("Unable to run onJoin event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onJoin event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch (Exception e) {
@@ -184,6 +208,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onRejected event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onRejected event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -208,6 +238,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onPartBefore event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onPartBefore event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -232,6 +268,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onPart event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onPart event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -271,6 +313,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onAvatar event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onAvatar event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -300,6 +348,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onPersonalMessage event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onPersonalMessage event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -326,6 +380,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onTextReceived event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onTextReceived event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -395,6 +455,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onTextBefore event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onTextBefore event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -421,6 +487,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onTextAfter event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onTextAfter event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -445,6 +517,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onEmoteReceived event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onEmoteReceived event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -474,6 +552,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onEmoteBefore event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onEmoteBefore event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -500,6 +584,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onEmoteAfter event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onEmoteAfter event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -532,6 +622,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onPMBefore event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onPMBefore event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -557,6 +653,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onPM event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onPM event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -581,6 +683,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onBotPM event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onBotPM event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -608,6 +716,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onNick event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onNick event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -621,12 +735,12 @@ namespace scripting
         {
             if (this.CanScript)
             {
-                if (Server.CanScript(client))
+                if (Server.CanScript(client))   
                 {
                     client.Print("/loadscript <script>");
                     client.Print("/killscript <script>");
                     client.Print("/listscripts");
-                    client.Print("/downloadscript <script>");
+                    client.Print("/downloadscript path | path looks like user/repository");
                     client.Print("/livescripts");
                     client.Print("/errors <on | off>");
                 }
@@ -644,6 +758,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onHelp event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onHelp event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -668,6 +788,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onFileReceived event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onFileReceived event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -696,6 +822,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onIgnoring event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onIgnoring event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -723,6 +855,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onIgnoredStateChanged event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onIgnoredStateChanged event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -747,6 +885,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onInvalidLoginAttempt event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onInvalidLoginAttempt event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -771,6 +915,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onLoginGranted event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onLoginGranted event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -795,6 +945,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onAdminLevelChanged event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onAdminLevelChanged event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -824,6 +980,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onRegistering event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onRegistering event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -850,6 +1012,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onRegistered event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onRegistered event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -874,6 +1042,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onUnregistered event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onUnregistered event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -905,6 +1079,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onVroomJoinCheck event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onVroomJoinCheck event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -931,6 +1111,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onVroomJoin event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onVroomJoin event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -958,6 +1144,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onFloodBefore event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onFloodBefore event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -984,6 +1176,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onFlood event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onFlood event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -1016,6 +1214,12 @@ namespace scripting
                     }
                     catch (Jurassic.JavaScriptException e)
                     {
+                        Server.Print(String.Format("Unable to run onProxyDetected event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                        ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                    }
+                    catch (Jurassic.Compiler.SyntaxErrorException e)
+                    {
+                        Server.Print(String.Format("Unable to run onProxyDetected event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                         ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                     }
                     catch { }
@@ -1042,6 +1246,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onLogout event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onLogout event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -1066,6 +1276,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onIdled event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onIdled event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -1090,6 +1306,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onUnidled event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onUnidled event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -1111,6 +1333,12 @@ namespace scripting
                     }
                     catch (Jurassic.JavaScriptException e)
                     {
+                        Server.Print(String.Format("Unable to run onBansAutoCleared event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                        ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                    }
+                    catch (Jurassic.Compiler.SyntaxErrorException e)
+                    {
+                        Server.Print(String.Format("Unable to run onBansAutoCleared event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                         ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                     }
                     catch { }
@@ -1132,7 +1360,14 @@ namespace scripting
 
                     if (cmd.StartsWith("downloadscript "))
                     {
-                        LiveScript.Download(cmd.Substring(15));
+                        string pattern = @"^[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+$";
+                        String path = cmd.Substring(15);
+                        Regex regex = new Regex(pattern);
+
+                        if (regex.IsMatch(path))
+                            LiveScript.GetDownload(client, path);
+                        else
+                            client.Print(path + " is not a valid path. Path must be like user/repository");
                         return;
                     }
 
@@ -1186,10 +1421,15 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
-                            System.Diagnostics.Debug.WriteLine(e);
+                            Server.Print(String.Format("Unable to run onCommand event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
-                        catch(Exception e) {
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onCommand event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Exception e) {
                             System.Diagnostics.Debug.WriteLine(e);
                         }
                 }
@@ -1210,6 +1450,12 @@ namespace scripting
                     }
                     catch (Jurassic.JavaScriptException e)
                     {
+                        Server.Print(String.Format("Unable to run onLinkError event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                        ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                    }
+                    catch (Jurassic.Compiler.SyntaxErrorException e)
+                    {
+                        Server.Print(String.Format("Unable to run onLinkError event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                         ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                     }
                     catch { }
@@ -1237,6 +1483,12 @@ namespace scripting
                     }
                     catch (Jurassic.JavaScriptException e)
                     {
+                        Server.Print(String.Format("Unable to run onLinked event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                        ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                    }
+                    catch (Jurassic.Compiler.SyntaxErrorException e)
+                    {
+                        Server.Print(String.Format("Unable to run onLinked event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                         ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                     }
                     catch { }
@@ -1264,6 +1516,12 @@ namespace scripting
                     }
                     catch (Jurassic.JavaScriptException e)
                     {
+                        Server.Print(String.Format("Unable to run onUnlinked event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                        ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                    }
+                    catch (Jurassic.Compiler.SyntaxErrorException e)
+                    {
+                        Server.Print(String.Format("Unable to run onUnlinked event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                         ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                     }
                     catch { }
@@ -1295,6 +1553,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onLeafJoin event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onLeafJoin event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -1319,6 +1583,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onLeafPart event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onLeafPart event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }
@@ -1350,6 +1620,12 @@ namespace scripting
                         }
                         catch (Jurassic.JavaScriptException e)
                         {
+                            Server.Print(String.Format("Unable to run onLinkedAdminDisabled event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
+                            ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
+                        }
+                        catch (Jurassic.Compiler.SyntaxErrorException e)
+                        {
+                            Server.Print(String.Format("Unable to run onLinkedAdminDisabled event in the script {0} \x06{1} - LineReference: {2}", s.ScriptName, e.Message, e.LineNumber));
                             ErrorDispatcher.SendError(s.ScriptName, e.Message, e.LineNumber);
                         }
                         catch { }

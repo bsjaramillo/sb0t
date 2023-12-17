@@ -277,7 +277,9 @@ namespace gui
                 Uri uri;
 
                 if (Uri.TryCreate(this.textBox5.Text, UriKind.Absolute, out uri))
-                    Settings.Set("url", this.textBox5.Text, "web");
+                    Settings.Set("url", this.textBox5.Text, "lse");
+                if (String.IsNullOrEmpty(this.textBox5.Text))
+                    this.textBox5.Text = "http://198.58.100.116:3000/api/v1";
             }
             else if (tb.Name == "textBox6")
             {

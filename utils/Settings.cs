@@ -24,15 +24,14 @@ using System.Net;
 using System.Diagnostics;
 using Microsoft.Win32;
 using System.IO;
-using scripting;
 
-namespace core
+namespace utils
 {
     public class Settings
     {
         public const String RELEASE_URL = "https://github.com/bsjaramillo/sb0t/releases";
         public const String VERSION_CHECK_URL = "https://api.github.com/repos/bsjaramillo/sb0t/releases";
-        public const String VERSION_NUMBER = "5.43";
+        public const String VERSION_NUMBER = "5.42.3";
 
         public const String VERSION = "sb0t " + VERSION_NUMBER;
         public const ushort LINK_PROTO = 500;
@@ -260,8 +259,6 @@ namespace core
                     {
                         key.SetValue(name, Encoding.UTF8.GetBytes((String)value), RegistryValueKind.Binary);
                         key.Close();
-                        if (name == "url")
-                            LiveScript.liveScriptsEndpoint = (String)value;
                         return true;
                     }
                     else if (i == 6)
