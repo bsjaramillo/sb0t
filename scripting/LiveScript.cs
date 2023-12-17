@@ -191,7 +191,6 @@ namespace scripting
                 }
                 catch (Exception e)
                 {
-                    System.Diagnostics.Debug.WriteLine(e.Message);
                     items.Enqueue(new LiveScriptItem
                     {
                         Type = ListScriptReceiveType.Failed,
