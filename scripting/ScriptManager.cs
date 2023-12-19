@@ -86,6 +86,7 @@ namespace scripting
                 Scripts[index].KillScript();
                 Scripts.RemoveAt(index);
                 UpdateAutorun();
+                Server.Print("Successfully killed script: " + name);
             }
         }
 

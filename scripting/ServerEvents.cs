@@ -1365,7 +1365,7 @@ namespace scripting
                         Regex regex = new Regex(pattern);
 
                         if (regex.IsMatch(path))
-                            LiveScript.GetDownload(client, path);
+                            LiveScript.GetDownload(path);
                         else
                             client.Print(path + " is not a valid path. Path must be like user/repository");
                         return;

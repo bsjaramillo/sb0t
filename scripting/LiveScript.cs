@@ -79,10 +79,11 @@ namespace scripting
             }
         }
 
-        public static void GetDownload(IUser target,String path)
+        public static void GetDownload(String path)
         {
             String urlZipRelease = "";
             ManualResetEvent threadCompletedEvent = new ManualResetEvent(false);
+            Server.Print("Starting download of the script from: "+path);
             new Thread(new ThreadStart(() =>
             {
                 try

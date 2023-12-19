@@ -62,8 +62,7 @@ namespace scripting.Statics
                         string[] lines = File.ReadAllLines(path);
 
                         // Eliminar las líneas en blanco y unir el resultado
-                        string contentWithoutBlankLines = string.Join(Environment.NewLine, lines.Where(line => !string.IsNullOrWhiteSpace(line)));
-
+                        string contentWithoutBlankLines = string.Join("\n", lines.Where(line => !string.IsNullOrWhiteSpace(line)));
                         return contentWithoutBlankLines;
                     }
                     catch { }
@@ -180,7 +179,7 @@ namespace scripting.Statics
                     path = Path.Combine(Server.DataPath, eng.UserData as string, "data", file);
 
                     // Agregar el contenido a una nueva línea
-                    content = content.TrimEnd('\r', '\n') + Environment.NewLine;
+                    content = content.TrimEnd('\r', '\n') + "\n";
 
                     using (StreamWriter stream = File.AppendText(path))
                         stream.Write(content);
