@@ -502,10 +502,7 @@ namespace scripting.Objects
             if (a is JSScribbleImage)
             {
                 JSScribbleImage scr = (JSScribbleImage)a;
-                if(b is String && !(b is Undefined))
-                    scr.SendScribble(Server.Chatroom.BotName, this.parent, b.ToString());
-                else
-                    scr.SendScribble(Server.Chatroom.BotName, this.parent);
+                scr.SendScribble(Server.Chatroom.BotName, this.parent);
             }
             else if (!(a is Undefined) && b is JSScribbleImage)
             {

@@ -641,8 +641,8 @@ namespace core.ib0t
                             UserPool.AUsers.ForEachWhere(x => x.SendPacket(TCPOutbound.Avatar(x, client)),
                                 x => x.LoggedIn && x.Vroom == client.Vroom && !x.Quarantined);
 
-                            UserPool.WUsers.ForEachWhere(x => x.QueuePacket(ib0t.WebOutbound.AvatarTo(x, client.Name, client.FullAvatar)),
-                                x => x.LoggedIn && x.Vroom == client.Vroom && !x.Quarantined && x.Extended && (x.IsInbizierWeb || x.IsInbizierMobile));
+                            UserPool.WUsers.ForEachWhere(x => x.QueuePacket(ib0t.WebOutbound.AvatarTo(x, client.Name, (x.IsInbizierWeb || x.IsInbizierMobile)?client.FullAvatar:client.Avatar)),
+                                x => x.LoggedIn && x.Vroom == client.Vroom && !x.Quarantined && x.Extended);
 
                             if (ServerCore.Linker.Busy && ServerCore.Linker.LoginPhase == LinkLeaf.LinkLogin.Ready)
                                 ServerCore.Linker.SendPacket(LinkLeaf.LeafOutbound.LeafAvatar(ServerCore.Linker, client));
@@ -708,7 +708,8 @@ namespace core.ib0t
             {
                 try
                 {
-                    if (arg_items[6] !="/default.png") {
+                    client.PersonalMessage = arg_items[5];
+                    if (arg_items[6] !="/default.png"&&!String.IsNullOrEmpty(arg_items[6])) {
                         byte[] fullavatar = Convert.FromBase64String(arg_items[6]);
                         byte[] avatar = client.Scale(fullavatar);
                         if (!client.Avatar.SequenceEqual(avatar))
@@ -724,7 +725,7 @@ namespace core.ib0t
                                     }
                     }
                     
-                    client.PersonalMessage = arg_items[5];
+                    
                 }
                 catch (Exception e)
                 {
@@ -855,9 +856,12 @@ namespace core.ib0t
                 {
                     client.QueuePacket(WebOutbound.ServerInfo(client));
                 }
-                client.QueuePacket(WebOutbound.TopicFirstTo(client, Settings.Get<String>("topic")));
-                if(!(client.IsInbizierWeb || client.IsInbizierMobile))
+                else
+                {
                     client.QueuePacket(WebOutbound.UserlistItemTo(client, Settings.Get<String>("bot"), ILevel.Host));
+                }
+                client.QueuePacket(WebOutbound.TopicFirstTo(client, Settings.Get<String>("topic")));
+                    
 
                 UserPool.AUsers.ForEachWhere(x => client.QueuePacket(
                     client.IsInbizierWeb||client.IsInbizierMobile
@@ -981,7 +985,6 @@ namespace core.ib0t
         private static void Text(ib0tClient client, String args, ulong time)
         {
             String text = args;
-
             if (text.StartsWith("#login") || text.StartsWith("#register"))
             {
                 Command(client, text.Substring(1));

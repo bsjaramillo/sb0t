@@ -125,19 +125,8 @@ namespace scripting.Objects
         {
             if (this.Data == null)
                 return;
-            
-            target.Scribble(sender == null ? Server.Chatroom.BotName : sender, this.Data, this.Height);
-        }
-        public void SendScribble(String sender, IUser target,String url)
-        {
-            if (this.Data == null)
-                return;
-            if (target.IsInbizierWeb|| target.IsInbizierMobile)
-            {
-                if (url == null)
-                    return;
-                target.Scribble(sender == null ? Server.Chatroom.BotName : sender, url);
-            }
+            if ((target.IsInbizierWeb || target.IsInbizierMobile) && !String.IsNullOrEmpty(this.URL))
+                target.Scribble(sender == null ? Server.Chatroom.BotName : sender, this.URL);
             else
                 target.Scribble(sender == null ? Server.Chatroom.BotName : sender, this.Data, this.Height);
         }
@@ -146,7 +135,6 @@ namespace scripting.Objects
         {
             if (this.Data == null)
                 return;
-
             leaf.Scribble(sender == null ? Server.Chatroom.BotName : sender, this.Data, this.Height);
         }
     }

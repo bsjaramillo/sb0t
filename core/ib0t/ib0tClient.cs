@@ -628,7 +628,7 @@ namespace core.ib0t
         public byte[] Avatar
         {
             get { 
-                if(this.avatar==null)
+                if(this.avatar==null||this.avatar.Length==0)
                     return Resource1.web;
                 return this.avatar; }
             set
@@ -658,7 +658,7 @@ namespace core.ib0t
         {
             get
             {
-                if (this.fullavatar == null)
+                if (this.fullavatar == null||this.fullavatar.Length==0)
                     return Resource1.web;
                 return this.fullavatar;
             }
@@ -686,31 +686,37 @@ namespace core.ib0t
         }
         public byte[] Scale(byte[] raw)
         {
-            byte[] result;
+            byte[] result=null;
 
-            using (MemoryStream raw_ms = new MemoryStream(raw))
-            using (Bitmap raw_bmp = new Bitmap(raw_ms))
-            using (Bitmap sized = new Bitmap(48, 48))
-            using (Graphics g = Graphics.FromImage(sized))
+            try
             {
-                using (SolidBrush sb = new SolidBrush(Color.White))
-                    g.FillRectangle(sb, new Rectangle(0, 0, 48, 48));
-
-                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                g.CompositingQuality = CompositingQuality.HighQuality;
-                g.SmoothingMode = SmoothingMode.HighQuality;
-                g.DrawImage(raw_bmp, new Rectangle(0, 0, 48, 48));
-                ImageCodecInfo info = new List<ImageCodecInfo>(ImageCodecInfo.GetImageEncoders()).Find(x => x.MimeType == "image/jpeg");
-                EncoderParameters encoding = new EncoderParameters();
-                encoding.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 69L);
-
-                using (MemoryStream ms = new MemoryStream())
+                using (MemoryStream raw_ms = new MemoryStream(raw))
+                using (Bitmap raw_bmp = new Bitmap(raw_ms))
+                using (Bitmap sized = new Bitmap(48, 48))
+                using (Graphics g = Graphics.FromImage(sized))
                 {
-                    sized.Save(ms, info, encoding);
-                    result = ms.ToArray();
+                    using (SolidBrush sb = new SolidBrush(Color.White))
+                        g.FillRectangle(sb, new Rectangle(0, 0, 48, 48));
+
+                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    g.CompositingQuality = CompositingQuality.HighQuality;
+                    g.SmoothingMode = SmoothingMode.HighQuality;
+                    g.DrawImage(raw_bmp, new Rectangle(0, 0, 48, 48));
+                    ImageCodecInfo info = new List<ImageCodecInfo>(ImageCodecInfo.GetImageEncoders()).Find(x => x.MimeType == "image/jpeg");
+                    EncoderParameters encoding = new EncoderParameters();
+                    encoding.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 69L);
+
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        sized.Save(ms, info, encoding);
+                        result = ms.ToArray();
+                    }
                 }
             }
+            catch
+            {
 
+            }
             return result;
         }
         public void BinaryWrite(byte[] data)

@@ -243,6 +243,13 @@ namespace core.ib0t
             String isinbiziermobile = userobj.IsInbizierMobile ? "1" : "0";
             return WebSockets.Html5TextPacket("JOININFO:" + userobj.Name.Length + "," + userobj.PersonalMessage.Length + "," + avstr.Length + ","  + userobj.ID.ToString().Length + ",1,1,1:" + userobj.Name + userobj.PersonalMessage + avstr + userobj.ID + (byte)userobj.Level+isinbizierweb+isinbiziermobile, oldproto);
         }
+        public static byte[] JoinInfoTo(core.LinkLeaf.LinkUser userobj, bool oldproto)
+        {
+            String avstr = Convert.ToBase64String(userobj.FullAvatar);
+            String isinbizierweb = userobj.IsInbizierWeb ? "1" : "0";
+            String isinbiziermobile = userobj.IsInbizierMobile ? "1" : "0";
+            return WebSockets.Html5TextPacket("JOININFO:" + userobj.Name.Length + "," + userobj.PersonalMessage.Length + "," + avstr.Length + "," + userobj.ID.ToString().Length + ",1,1,1:" + userobj.Name + userobj.PersonalMessage + avstr + userobj.ID + (byte)userobj.Level + isinbizierweb + isinbiziermobile, oldproto);
+        }
         public static byte[] UserlistItemTo(ib0tClient userobj, String name, ILevel level)
         {
             return WebSockets.Html5TextPacket("USERLIST:" + name.Length + ",1:" + name + ((byte)level), userobj.WebCredentials.OldProto);

@@ -1213,12 +1213,14 @@ namespace core.LinkLeaf
 
                     UserPool.WUsers.ForEachWhere(x =>
                     {
-                        x.QueuePacket(ib0t.WebOutbound.JoinTo(x, user.Name, user.Level));
+                        x.QueuePacket((x.IsInbizierMobile||x.IsInbizierWeb)
+                            ? ib0t.WebOutbound.JoinInfoTo(user,x.WebCredentials.OldProto)
+                            : ib0t.WebOutbound.JoinTo(x, user.Name, user.Level));
 
-                        if (user.Avatar.Length > 0)
+                        if (user.Avatar.Length > 0 && !(x.IsInbizierMobile || x.IsInbizierWeb))
                             x.QueuePacket(ib0t.WebOutbound.AvatarTo(x, user.Name, user.Avatar));
 
-                        if (user.PersonalMessage.Length > 0)
+                        if (user.PersonalMessage.Length > 0 && !(x.IsInbizierMobile || x.IsInbizierWeb))
                             x.QueuePacket(ib0t.WebOutbound.PersMsgTo(x, user.Name, user.PersonalMessage));
                     },
                         x => x.LoggedIn && x.Vroom == user.Vroom && !x.Quarantined && x.Extended);

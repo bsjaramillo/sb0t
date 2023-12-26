@@ -28,7 +28,6 @@ namespace core.LinkLeaf
     class LinkUser : IClient, IUser
     {
         public uint LastScribble { get; set; }
-        public byte[] FullAvatar { get; set; }
         public bool Ares { get; set; }
         public bool SupportsHTML { get { return false; } }
         public uint JoinTime { get; set; }
@@ -126,11 +125,16 @@ namespace core.LinkLeaf
         }
 
 
-        public void SetAvatar(byte[] data) { this._avatar = data; }
+        public void SetAvatar(byte[] data) { this._avatar = data; this._fullavatar = data; }
         private byte[] _avatar;
+        private byte[] _fullavatar;
         public byte[] Avatar
         {
-            get { return this._avatar; }
+            get {
+                if (this._avatar == null || this._avatar.Length == 0)
+                    return Resource1.web;
+                return this._avatar;
+            }
             set
             {
                 if (ServerCore.Linker.Busy && ServerCore.Linker.LoginPhase == LinkLeaf.LinkLogin.Ready)
@@ -138,7 +142,17 @@ namespace core.LinkLeaf
                         this, "avatar", value == null ? new byte[] { } : value));
             }
         }
-
+        public byte[] FullAvatar { get {
+                if (this._fullavatar == null || this._fullavatar.Length == 0)
+                    return Resource1.web;
+                return this._fullavatar; ; }
+            set
+            {
+                if (ServerCore.Linker.Busy && ServerCore.Linker.LoginPhase == LinkLeaf.LinkLogin.Ready)
+                    ServerCore.Linker.SendPacket(LeafOutbound.LeafIUserBin(ServerCore.Linker,
+                        this, "avatar", value == null ? new byte[] { } : value));
+            }
+         }
         public void SetPersonalMessage(String str) { this._personalmessage = str; }
         private String _personalmessage;
         public String PersonalMessage

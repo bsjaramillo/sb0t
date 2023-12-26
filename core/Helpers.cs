@@ -30,59 +30,85 @@ namespace core
 {
     class Helpers
     {
-        public static String AresColorToHTMLColor(byte c)
+        public static String AresColorToHTMLColor(byte index)
         {
-            switch (c)
+            if (index >= 0 && index < acols.Length)
             {
-                case 1: return "#000000";
-                case 0: return "#FFFFFF";
-                case 8: return "#FFFF00";
-                case 11: return "#00FFFF";
-                case 12: return "#0000FF";
-                case 2: return "#000080";
-                case 6: return "#800080";
-                case 9: return "#00FF00";
-                case 13: return "#FF00FF";
-                case 14: return "#808080";
-                case 15: return "#C0C0C0";
-                case 7: return "#FFA500";
-                case 5: return "#800000";
-                case 10: return "#008080";
-                case 3: return "#008000";
-                case 4: return "#FF0000";
-                default: return null;
+                return acols[index];
+            }
+            else
+            {
+                return null;
             }
         }
 
-        private static Color[] acols = new Color[]
+        private static string[] acols = new string[]
         {
-            Color.White, Color.Black, Color.Navy, Color.Green, Color.Red, Color.Maroon, Color.Purple, Color.Orange,
-            Color.Yellow, Color.Lime, Color.Teal, Color.Aqua, Color.Blue, Color.Fuchsia, Color.Gray, Color.Silver
+            ToHexString(Color.White),
+            ToHexString(Color.Black),
+            ToHexString(Color.Navy),
+            ToHexString(Color.Green),
+            ToHexString(Color.Red),
+            ToHexString(Color.Maroon),
+            ToHexString(Color.Purple),
+            ToHexString(Color.Orange),
+            ToHexString(Color.Yellow),
+            ToHexString(Color.Lime),
+            ToHexString(Color.Teal),
+            ToHexString(Color.Aqua),
+            ToHexString(Color.Blue),
+            ToHexString(Color.Fuchsia),
+            ToHexString(Color.Gray),
+            ToHexString(Color.Silver),
+            ToHexString(Color.OrangeRed),
+            ToHexString(Color.SaddleBrown),
+            ToHexString(Color.DarkCyan),
+            ToHexString(Color.Indigo),
+            ToHexString(Color.Crimson),
+            ToHexString(Color.ForestGreen),
+            ToHexString(Color.DarkOrchid),
+            ToHexString(Color.HotPink),
+            ToHexString(Color.DarkSlateGray),
+            ToHexString(Color.LightSteelBlue),
+            ToHexString(Color.LawnGreen),
+            ToHexString(Color.LightSeaGreen),
+            ToHexString(Color.BurlyWood),
+            ToHexString(Color.Chartreuse),
+            ToHexString(Color.DarkGoldenrod),
+            ToHexString(Color.DarkMagenta),
+            ToHexString(Color.DeepSkyBlue),
+            ToHexString(Color.Gold),
+            ToHexString(Color.LightCoral),
+            ToHexString(Color.MediumPurple),
+            ToHexString(Color.Olive),
+            ToHexString(Color.PaleVioletRed),
+            ToHexString(Color.RosyBrown),
+            ToHexString(Color.SeaGreen),
+            ToHexString(Color.SlateBlue),
+            ToHexString(Color.SpringGreen),
+            ToHexString(Color.Tomato),
+            ToHexString(Color.Violet),
+            ToHexString(Color.Wheat),
+            ToHexString(Color.YellowGreen)
         };
-
-        public static byte HTMLColorToAresColor(String h)
+        
+        static string ToHexString(Color color)
         {
-            byte r = byte.Parse(h.Substring(1, 2), NumberStyles.HexNumber);
-            byte g = byte.Parse(h.Substring(3, 2), NumberStyles.HexNumber);
-            byte b = byte.Parse(h.Substring(5, 2), NumberStyles.HexNumber);
+            return $"#{color.R:X2}{color.G:X2}{color.B:X2}";
+        }
 
-            double closest = double.MaxValue;
-            int result = 0;
-
-            for (int i = 0; i < acols.Length; i++)
+        public static byte HTMLColorToAresColor(string h)
+        {
+            for (byte i = 0; i < acols.Length; i++)
             {
-                double d = Math.Sqrt(Math.Pow((r - acols[i].R), 2) +
-                                     Math.Pow((g - acols[i].G), 2) +
-                                     Math.Pow((b - acols[i].B), 2));
-
-                if (d < closest)
+                if (h == acols[i])
                 {
-                    closest = d;
-                    result = i;
+                    return i;
                 }
             }
 
-            return (byte)result;
+            // If no exact match is found, you can return a default value or handle it as needed.
+            return 255; // For example, returning 255 as an indication of no match.
         }
 
         public static String StripColors(String input)
@@ -501,18 +527,43 @@ namespace core
                 UserPool.AUsers.ForEachWhere(x => x.SendPacket(other == null ? TCPOutbound.Join(x, client) : TCPOutbound.UpdateUserStatus(x, client)),
                     x => x.LoggedIn && x.Vroom == client.Vroom && !x.Quarantined);
 
-                UserPool.WUsers.ForEachWhere(x => x.QueuePacket(other == null ? ib0t.WebOutbound.JoinTo(x, client.Name, client.Level) : ib0t.WebOutbound.UpdateTo(x, client.Name, client.Level)),
+                UserPool.WUsers.ForEachWhere(x => x.QueuePacket(
+                    other == null 
+                    ?
+                        x.IsInbizierWeb || x.IsInbizierMobile
+                        ?
+                        WebOutbound.JoinInfoTo(client)
+                        :
+                        ib0t.WebOutbound.JoinTo(x, client.Name, client.Level)
+                    :
+                    ib0t.WebOutbound.UpdateTo(x, client.Name, client.Level)),
                     x => x.LoggedIn && x.Vroom == client.Vroom && !x.Quarantined);
             }
 
             client.LoggedIn = true;
+            client.QueuePacket(WebOutbound.PublicTo(client, String.Empty, "Server: " + Settings.VERSION + " - " + Settings.RELEASE_URL));
             client.QueuePacket(WebOutbound.AckTo(client, client.Name));
-            client.QueuePacket(WebOutbound.UserlistItemTo(client, Settings.Get<String>("bot"), ILevel.Host));
+            if (client.IsInbizierMobile || client.IsInbizierWeb)
+                client.QueuePacket(WebOutbound.ServerInfo(client));
+            else
+                client.QueuePacket(WebOutbound.UserlistItemTo(client, Settings.Get<String>("bot"), ILevel.Host));
 
-            UserPool.AUsers.ForEachWhere(x => client.QueuePacket(WebOutbound.UserlistItemTo(client, x.Name, x.Level)),
+            UserPool.AUsers.ForEachWhere(x => client.QueuePacket(
+                client.IsInbizierWeb || client.IsInbizierMobile
+                ?
+                WebOutbound.UserInfoTo(x, client.WebCredentials.OldProto)
+                :
+                WebOutbound.UserlistItemTo(client, x.Name, x.Level)
+                ),
                 x => x.LoggedIn && x.Vroom == client.Vroom && !x.Cloaked && !x.Quarantined);
 
-            UserPool.WUsers.ForEachWhere(x => client.QueuePacket(WebOutbound.UserlistItemTo(client, x.Name, x.Level)),
+            UserPool.WUsers.ForEachWhere(x => client.QueuePacket(
+                client.IsInbizierWeb || client.IsInbizierMobile
+                ?
+                WebOutbound.UserInfoTo(x)
+                :
+                WebOutbound.UserlistItemTo(client, x.Name, x.Level)
+                ),
                 x => x.LoggedIn && x.Vroom == client.Vroom && !x.Cloaked && !x.Quarantined);
 
             UserPool.AUsers.ForEachWhere(x =>
@@ -523,7 +574,12 @@ namespace core
 
             if (ServerCore.Linker.Busy)
                 foreach (LinkLeaf.Leaf leaf in ServerCore.Linker.Leaves)
-                    leaf.Users.ForEachWhere(x => client.QueuePacket(WebOutbound.UserlistItemTo(client, x.Name, x.Level)),
+                    leaf.Users.ForEachWhere(x => client.QueuePacket(
+                        client.IsInbizierWeb || client.IsInbizierMobile 
+                        ?
+                        WebOutbound.UserInfoTo(x) :
+                        WebOutbound.UserlistItemTo(client, x.Name, x.Level)
+                        ),
                         x => x.Vroom == client.Vroom && x.Link.Visible);
 
             client.QueuePacket(WebOutbound.UserlistEndTo(client));
@@ -533,30 +589,41 @@ namespace core
 
             if (client.Extended)
             {
-                client.QueuePacket(WebOutbound.PerMsgBotTo(client));
-                client.QueuePacket(Avatars.Server(client));
+                if (client.IsInbizierWeb || client.IsInbizierMobile)
+                {
+                    client.QueuePacket(WebOutbound.UserInfoTo(client, Settings.Get<String>("bot"), ILevel.Host, Avatars.GotServerAvatar));
+                }
+                else
+                {
+                    client.QueuePacket(WebOutbound.PerMsgBotTo(client));
+
+                    if (Avatars.GotServerAvatar)
+                    {
+                        client.QueuePacket(Avatars.Server(client));
+                    }
+                }
 
                 UserPool.AUsers.ForEachWhere(x => client.QueuePacket(WebOutbound.AvatarTo(client, x.Name, x.Avatar)),
                     x => x.LoggedIn && x.Vroom == client.Vroom && x.Avatar.Length > 0 && !x.Cloaked && !x.Quarantined);
 
                 UserPool.WUsers.ForEachWhere(x => client.QueuePacket(WebOutbound.AvatarTo(client, x.Name, x.Avatar)),
-                    x => x.LoggedIn && x.Vroom == client.Vroom && !x.Cloaked && !x.Quarantined);
+                    x => x.LoggedIn && x.Vroom == client.Vroom && !x.Cloaked && !x.Quarantined && !(x.IsInbizierWeb || x.IsInbizierMobile));
 
                 if (ServerCore.Linker.Busy)
                     foreach (LinkLeaf.Leaf leaf in ServerCore.Linker.Leaves)
                         leaf.Users.ForEachWhere(x => client.QueuePacket(WebOutbound.AvatarTo(client, x.Name, x.Avatar)),
-                            x => x.Vroom == client.Vroom && x.Link.Visible && x.Avatar.Length > 0);
+                            x => x.Vroom == client.Vroom && x.Link.Visible && x.Avatar.Length > 0 && !(client.IsInbizierWeb || client.IsInbizierMobile));
 
                 UserPool.AUsers.ForEachWhere(x => client.QueuePacket(WebOutbound.PersMsgTo(client, x.Name, x.PersonalMessage)),
                     x => x.LoggedIn && x.Vroom == client.Vroom && x.PersonalMessage.Length > 0 && !x.Cloaked && !x.Quarantined);
 
                 UserPool.WUsers.ForEachWhere(x => client.QueuePacket(WebOutbound.PersMsgTo(client, x.Name, x.PersonalMessage)),
-                    x => x.LoggedIn && x.Vroom == client.Vroom && !x.Cloaked && !x.Quarantined);
+                    x => x.LoggedIn && x.Vroom == client.Vroom && !x.Cloaked && !x.Quarantined && !(x.IsInbizierWeb || x.IsInbizierMobile));
 
                 if (ServerCore.Linker.Busy)
                     foreach (LinkLeaf.Leaf leaf in ServerCore.Linker.Leaves)
                         leaf.Users.ForEachWhere(x => client.QueuePacket(WebOutbound.PersMsgTo(client, x.Name, x.PersonalMessage)),
-                            x => x.Vroom == client.Vroom && x.Link.Visible && x.PersonalMessage.Length > 0);
+                            x => x.Vroom == client.Vroom && x.Link.Visible && x.PersonalMessage.Length > 0 && !(client.IsInbizierWeb || client.IsInbizierMobile));
             }
 
             if (client.Avatar.Length > 0)
@@ -566,7 +633,7 @@ namespace core
                         x => x.LoggedIn && x.Vroom == client.Vroom && !x.Quarantined);
 
                     UserPool.WUsers.ForEachWhere(x => x.QueuePacket(WebOutbound.AvatarTo(x, client.Name, client.Avatar)),
-                        x => x.LoggedIn && x.Vroom == client.Vroom && !x.Quarantined && x.Extended);
+                        x => x.LoggedIn && x.Vroom == client.Vroom && !x.Quarantined && x.Extended && !(x.IsInbizierWeb || x.IsInbizierMobile));
 
                     if (ServerCore.Linker.Busy && ServerCore.Linker.LoginPhase == LinkLeaf.LinkLogin.Ready)
                         ServerCore.Linker.SendPacket(LinkLeaf.LeafOutbound.LeafAvatar(ServerCore.Linker, client));
@@ -579,7 +646,7 @@ namespace core
                         x => x.LoggedIn && x.Vroom == client.Vroom && !x.Quarantined);
 
                     UserPool.WUsers.ForEachWhere(x => x.QueuePacket(WebOutbound.PersMsgTo(x, client.Name, client.PersonalMessage)),
-                        x => x.LoggedIn && x.Vroom == client.Vroom && !x.Quarantined && x.Extended);
+                        x => x.LoggedIn && x.Vroom == client.Vroom && !x.Quarantined && x.Extended && !(x.IsInbizierWeb || x.IsInbizierMobile));
 
                     if (ServerCore.Linker.Busy && ServerCore.Linker.LoginPhase == LinkLeaf.LinkLogin.Ready)
                         ServerCore.Linker.SendPacket(LinkLeaf.LeafOutbound.LeafPersonalMessage(ServerCore.Linker, client));
