@@ -28,7 +28,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.IO;
 using System.Net;
 using System.Diagnostics;
@@ -386,10 +385,31 @@ namespace gui
         {
             try
             {
-                Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
-                    "\\sb0t\\" + AppDomain.CurrentDomain.FriendlyName);
+                string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "sb0t");
+                string fileName = AppDomain.CurrentDomain.FriendlyName; // May need modification if it contains file extension
+                string fullPath = Path.Combine(folderPath, fileName);
+                System.Diagnostics.Debug.WriteLine(fullPath);
+
+                if (Directory.Exists(folderPath))
+                {
+                    ProcessStartInfo psi = new ProcessStartInfo
+                    {
+                        FileName = folderPath,
+                        UseShellExecute = true,
+                        Verb = "open"
+                    };
+
+                    Process.Start(psi);
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("Folder does not exist.");
+                }
             }
-            catch { }
+            catch(Exception err) {
+                System.Diagnostics.Debug.WriteLine(err);
+
+            }
         }
 
         private void button3_Click(object sender, RoutedEventArgs e) // ares join
