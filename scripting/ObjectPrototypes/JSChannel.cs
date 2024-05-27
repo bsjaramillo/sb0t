@@ -25,7 +25,6 @@ using Jurassic.Library;
 
 namespace scripting.ObjectPrototypes
 {
-    [JSObject(Name = "Channel")]
     class JSChannel : ClrFunction
     {
         public JSChannel(ScriptEngine eng)

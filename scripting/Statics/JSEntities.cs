@@ -26,7 +26,6 @@ using Jurassic.Library;
 
 namespace scripting.Statics
 {
-    [JSObject(Name = "Entities")]
     class JSEntities : ObjectInstance
     {
         public JSEntities(ScriptEngine engine)
@@ -34,7 +33,7 @@ namespace scripting.Statics
         {
             this.PopulateFunctions();
 
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("Entities", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("Entities", PropertyAttributes.Sealed), true);
         }
 
         [JSFunction(Name = "encode", IsWritable = false, IsEnumerable = true)]

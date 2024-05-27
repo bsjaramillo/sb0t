@@ -25,7 +25,6 @@ using Jurassic.Library;
 
 namespace scripting.Statics
 {
-    [JSObject(Name = "Link")]
     class JSLink : ObjectInstance
     {
         public JSLink(ScriptEngine engine)
@@ -33,7 +32,7 @@ namespace scripting.Statics
         {
             this.PopulateFunctions();
 
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("Link", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("Link", PropertyAttributes.Sealed), true);
         }
 
         [JSFunction(Name = "leaves", Flags = JSFunctionFlags.HasEngineParameter, IsWritable = false, IsEnumerable = true)]
@@ -42,7 +41,7 @@ namespace scripting.Statics
             if (Server.Link.IsLinked)
                 if (f is UserDefinedFunction)
                 {
-                    JSScript script = ScriptManager.Scripts.Find(x => x.ScriptName == eng.UserData as string);
+                    JSScript script = ScriptManager.Scripts.Find(x => x.ScriptName == eng.GetGlobalValue("UserData").ToString());
 
                     if (script != null)
                     {
@@ -64,7 +63,7 @@ namespace scripting.Statics
 
             if (Server.Link.IsLinked && !(a is Undefined))
             {
-                JSScript script = ScriptManager.Scripts.Find(x => x.ScriptName == eng.UserData as string);
+                JSScript script = ScriptManager.Scripts.Find(x => x.ScriptName == eng.GetGlobalValue("UserData").ToString());
 
                 if (script != null)
                 {

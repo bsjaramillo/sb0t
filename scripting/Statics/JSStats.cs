@@ -25,14 +25,13 @@ using Jurassic.Library;
 
 namespace scripting.Statics
 {
-    [JSObject(Name = "Stats")]
     class JSStats : ObjectInstance
     {
         public JSStats(ScriptEngine engine)
             : base(engine)
         {
             this.PopulateFunctions();
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("Stats", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("Stats", PropertyAttributes.Sealed), true);
         }
 
         [JSProperty(Name = "userCount")]

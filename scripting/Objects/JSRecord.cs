@@ -37,7 +37,7 @@ namespace scripting.Objects
             this.parent = user;
             this.ScriptName = script;
 
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("Record", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("Record", PropertyAttributes.Sealed), true);
         }
 
         internal JSRecord(ScriptEngine eng)

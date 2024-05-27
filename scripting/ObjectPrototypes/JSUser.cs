@@ -25,7 +25,6 @@ using Jurassic.Library;
 
 namespace scripting.ObjectPrototypes
 {
-    [JSObject(Name = "User")]
     class JSUser : ClrFunction
     {
         public JSUser(ScriptEngine eng)

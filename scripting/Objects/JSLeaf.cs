@@ -38,7 +38,7 @@ namespace scripting.Objects
             this.parent = leaf;
             this.ScriptName = script;
 
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("Leaf", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("Leaf", PropertyAttributes.Sealed), true);
         }
 
         internal JSLeaf(ScriptEngine eng)

@@ -25,14 +25,13 @@ using Jurassic.Library;
 
 namespace scripting.Statics
 {
-    [JSObject(Name = "Zip")]
     class JSZip : ObjectInstance
     {
         public JSZip(ScriptEngine engine)
             : base(engine)
         {
             this.PopulateFunctions();
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("Zip", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("Zip", PropertyAttributes.Sealed), true);
         }
 
         [JSFunction(Name = "compress", IsWritable = false, IsEnumerable = true)]

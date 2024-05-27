@@ -25,7 +25,6 @@ using Jurassic.Library;
 
 namespace scripting.ObjectPrototypes
 {
-    [JSObject(Name = "HttpRequestResult")]
     class JSHttpRequestResult : ClrFunction
     {
         public JSHttpRequestResult(ScriptEngine eng)

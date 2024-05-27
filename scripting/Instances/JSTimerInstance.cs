@@ -31,7 +31,7 @@ namespace scripting.Instances
             : base(prototype)
         {
             this.PopulateFunctions();
-            this.ScriptName = this.Engine.UserData as string;
+            this.ScriptName = this.Engine.GetGlobalValue("UserData").ToString();
             this.StartTime = 0;
 
             JSScript script = ScriptManager.Scripts.Find(x => x.ScriptName == this.ScriptName);
@@ -42,7 +42,7 @@ namespace scripting.Instances
                 script.timer_idents.Add(this.IDENT);
             }
 
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("Timer", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("Timer", PropertyAttributes.Sealed), true);
         }
 
         public String ScriptName { get; set; }

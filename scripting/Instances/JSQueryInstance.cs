@@ -62,7 +62,7 @@ namespace scripting.Instances
                 }
             }
 
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("Query", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("Query", PropertyAttributes.Sealed), true);
         }
     }
 }

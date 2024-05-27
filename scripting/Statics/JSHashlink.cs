@@ -27,7 +27,6 @@ using iconnect;
 
 namespace scripting.Statics
 {
-    [JSObject(Name = "Hashlink")]
     class JSHashlink : ObjectInstance
     {
         public JSHashlink(ScriptEngine engine)
@@ -35,7 +34,7 @@ namespace scripting.Statics
         {
             this.PopulateFunctions();
 
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("Hashlink", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("Hashlink", PropertyAttributes.Sealed), true);
         }
 
         [JSFunction(Name = "encode", IsWritable = false, IsEnumerable = true)]

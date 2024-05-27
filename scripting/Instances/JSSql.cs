@@ -25,7 +25,6 @@ using Jurassic.Library;
 
 namespace scripting.Instances
 {
-    [JSObject(Name = "Sql")]
     class JSSql : ClrFunction
     {
         public JSSql(ScriptEngine engine)

@@ -25,7 +25,6 @@ using Jurassic.Library;
 
 namespace scripting.ObjectPrototypes
 {
-    [JSObject(Name = "BannedUser")]
     class JSBannedUser : ClrFunction
     {
         public JSBannedUser(ScriptEngine eng)

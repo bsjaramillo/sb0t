@@ -26,7 +26,6 @@ using Jurassic.Library;
 
 namespace scripting.Statics
 {
-    [JSObject(Name = "Crypto")]
     class JSCrypto : ObjectInstance
     {
         public JSCrypto(ScriptEngine engine)
@@ -34,7 +33,7 @@ namespace scripting.Statics
         {
             this.PopulateFunctions();
 
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("Crypto", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("Crypto", PropertyAttributes.Sealed), true);
         }
 
         [JSFunction(Name = "md5hash", Flags = JSFunctionFlags.HasEngineParameter, IsWritable = false, IsEnumerable = true)]

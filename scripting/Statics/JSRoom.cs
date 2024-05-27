@@ -25,7 +25,6 @@ using Jurassic.Library;
 
 namespace scripting.Statics
 {
-    [JSObject(Name = "Room")]
     class JSRoom : ObjectInstance
     {
         public JSRoom(ScriptEngine engine)
@@ -33,7 +32,7 @@ namespace scripting.Statics
         {
             this.PopulateFunctions();
 
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("Room", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("Room", PropertyAttributes.Sealed), true);
         }
 
         [JSProperty(Name = "version")]

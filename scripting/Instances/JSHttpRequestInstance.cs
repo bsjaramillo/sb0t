@@ -40,7 +40,7 @@ namespace scripting.Instances
             this.PopulateFunctions();
             this.Agent = String.Empty;
 
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("HttpRequest", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("HttpRequest", PropertyAttributes.Sealed), true);
 
         }
 
@@ -111,7 +111,7 @@ namespace scripting.Instances
                 Objects.JSHttpRequestResult result = new Objects.JSHttpRequestResult(this.Engine.Object.InstancePrototype)
                 {
                     Callback = this.Callback,
-                    ScriptName = this.Engine.UserData as string,
+                    ScriptName = this.Engine.GetGlobalValue("UserData").ToString(),
                     Arg = arg
                 };
 

@@ -22,6 +22,7 @@ using System.Linq;
 using System.Text;
 using Jurassic;
 using Jurassic.Library;
+using Jurassic.Compiler;
 
 namespace scripting
 {
@@ -49,8 +50,7 @@ namespace scripting
                     {
                         Instances.JSTimerInstance timer = list[i];
                         list.RemoveAt(i);
-                        JSScript script = ScriptManager.Scripts.Find(x => x.ScriptName == timer.Engine.UserData as string);
-
+                        JSScript script = ScriptManager.Scripts.Find(x => x.ScriptName == timer.Engine.GetGlobalValue("UserData").ToString());
                         if (script != null)
                         {
                             if (script.timer_idents.Contains(timer.IDENT))
@@ -62,6 +62,12 @@ namespace scripting
                                 }
                                 catch (JavaScriptException e)
                                 {
+                                    Server.Print(String.Format("Unable to run timer {0} \x06{1} - LineReference: {2}",timer.ScriptName, e.Message, e.LineNumber));
+                                    ErrorDispatcher.SendError(timer.ScriptName, e.Message, e.LineNumber);
+                                }
+                                catch (SyntaxErrorException e)
+                                {
+                                    Server.Print(String.Format("Unable to run timer {0} \x06{1} - LineReference: {2}", timer.ScriptName, e.Message, e.LineNumber));
                                     ErrorDispatcher.SendError(timer.ScriptName, e.Message, e.LineNumber);
                                 }
                                 catch { }

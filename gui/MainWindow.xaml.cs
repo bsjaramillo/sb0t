@@ -36,6 +36,7 @@ using System.Threading;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
 using core;
+using Hardcodet.Wpf.TaskbarNotification;
 
 namespace gui
 {
@@ -50,7 +51,7 @@ namespace gui
         private ServerCore server { get; set; }
 
         private OpenFileDialog fd = new OpenFileDialog();
-        private System.Windows.Forms.NotifyIcon notify;
+        private TaskbarIcon notify;
         private bool _hidden = false;
 
         private static Mutex mutex;
@@ -85,11 +86,11 @@ namespace gui
             this.InitializeComponent();
             this.server = new ServerCore();
             ServerCore.LogUpdate += this.LogUpdate;
-            this.notify = new System.Windows.Forms.NotifyIcon();
-            this.notify.Text = "sb0t";
+            this.notify = new TaskbarIcon();
+            this.notify.Name = "sb0t";
             this.notify.Icon = Resource1.mains;
-            this.notify.Click += new EventHandler(this.NotifyIconClicked);
-            this.notify.Visible = true;
+            this.notify.TrayLeftMouseUp += this.NotifyIconClicked;
+            this.notify.Visibility = Visibility.Visible;
             GUILabels.Setup(this);
         }
 
@@ -610,7 +611,7 @@ namespace gui
 
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
-            this.notify.Visible = false;
+            this.notify.Visibility = Visibility.Collapsed;
         }
 
         private void Window_StateChanged(object sender, EventArgs e)

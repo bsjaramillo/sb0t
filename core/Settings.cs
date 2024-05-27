@@ -32,7 +32,7 @@ namespace core
     {
         public const String RELEASE_URL = "https://github.com/bsjaramillo/sb0t/releases";
         public const String VERSION_CHECK_URL = "https://api.github.com/repos/bsjaramillo/sb0t/releases";
-        public const String VERSION_NUMBER = "5.43.2";
+        public const String VERSION_NUMBER = "5.44";
 
         public const String VERSION = "sb0t " + VERSION_NUMBER;
         public const ushort LINK_PROTO = 500;

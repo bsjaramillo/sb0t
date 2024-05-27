@@ -40,7 +40,7 @@ namespace scripting.Objects
         {
             this.PopulateFunctions();
 
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("AvatarImage", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("AvatarImage", PropertyAttributes.Sealed), true);
         }
 
         public byte[] Data { get; set; }
@@ -105,7 +105,7 @@ namespace scripting.Objects
                 if (filename.Length > 1)
                     if (bad_chars.Count<String>(x => filename.Contains(x)) == 0)
                     {
-                        String path = Path.Combine(Server.DataPath, this.Engine.UserData as string, "data");
+                        String path = Path.Combine(Server.DataPath, this.Engine.GetGlobalValue("UserData").ToString(), "data");
 
                         try
                         {

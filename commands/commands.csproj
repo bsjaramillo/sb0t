@@ -1,117 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{91C83351-DFBC-4089-A416-0F42B7A65163}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>commands</RootNamespace>
-    <AssemblyName>commands</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\gui\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.SQLite, Version=1.0.66.1, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\core\Libraries\System.Data.SQLite.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="AdminTab.cs" />
-    <Compile Include="AntiFlood.cs" />
-    <Compile Include="AutoLogin.cs" />
-    <Compile Include="AvatarPMManager.cs" />
-    <Compile Include="Bans.cs" />
-    <Compile Include="BanSend.cs" />
-    <Compile Include="BanStats.cs" />
-    <Compile Include="Captchas.cs" />
-    <Compile Include="CustomNames.cs" />
-    <Compile Include="DefineDictionary.cs" />
-    <Compile Include="Echo.cs" />
-    <Compile Include="Eval.cs" />
-    <Compile Include="FileFilter.cs" />
-    <Compile Include="Greets.cs" />
-    <Compile Include="Hashlink.cs" />
-    <Compile Include="Helpers.cs" />
-    <Compile Include="History.cs" />
-    <Compile Include="IdleTime.cs" />
-    <Compile Include="IPSend.cs" />
-    <Compile Include="JoinFilter.cs" />
-    <Compile Include="KewlText.cs" />
-    <Compile Include="Kiddied.cs" />
-    <Compile Include="LoginAttempts.cs" />
-    <Compile Include="LogSend.cs" />
-    <Compile Include="Lowered.cs" />
-    <Compile Include="Motd.cs" />
-    <Compile Include="Muzzles.cs" />
-    <Compile Include="Paint.cs" />
-    <Compile Include="PMBlocking.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AsnBans.cs" />
-    <Compile Include="RangeBans.cs" />
-    <Compile Include="RoomInfo.cs" />
-    <Compile Include="Server.cs" />
-    <Compile Include="ServerEvents.Callback.cs" />
-    <Compile Include="ServerEvents.cs" />
-    <Compile Include="Settings.cs" />
-    <Compile Include="Template.cs" />
-    <Compile Include="Topics.cs" />
-    <Compile Include="Trace.cs" />
-    <Compile Include="UrbanDictionary.cs" />
-    <Compile Include="Urls.cs" />
-    <Compile Include="VSpy.cs" />
-    <Compile Include="Whowas.cs" />
-    <Compile Include="WordFilter.cs" />
+    <ProjectReference Include="..\iconnect\iconnect.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\iconnect\iconnect.csproj">
-      <Project>{fdebc3d9-56aa-4d35-93dc-5f7f0e9023b1}</Project>
-      <Name>iconnect</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

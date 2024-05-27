@@ -25,14 +25,13 @@ using Jurassic.Library;
 
 namespace scripting.Statics
 {
-    [JSObject(Name = "Users")]
     class JSUsers : ObjectInstance
     {
         public JSUsers(ScriptEngine engine)
             : base(engine)
         {
             this.PopulateFunctions();
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("Users", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("Users", PropertyAttributes.Sealed), true);
         }
 
         [JSFunction(Name = "local", Flags = JSFunctionFlags.HasEngineParameter, IsWritable = false, IsEnumerable = true)]
@@ -40,7 +39,7 @@ namespace scripting.Statics
         {
             if (f is UserDefinedFunction)
             {
-                JSScript script = ScriptManager.Scripts.Find(x => x.ScriptName == eng.UserData as string);
+                JSScript script = ScriptManager.Scripts.Find(x => x.ScriptName == eng.GetGlobalValue("UserData").ToString());
 
                 if (script != null)
                 {
@@ -60,7 +59,7 @@ namespace scripting.Statics
         {
             if (f is UserDefinedFunction)
             {
-                JSScript script = ScriptManager.Scripts.Find(x => x.ScriptName == eng.UserData as string);
+                JSScript script = ScriptManager.Scripts.Find(x => x.ScriptName == eng.GetGlobalValue("UserData").ToString());
 
                 if (script != null)
                     if (Server.Link.IsLinked)
@@ -86,7 +85,7 @@ namespace scripting.Statics
                 try
                 {
                     Server.Users.Banned(x => function.Call(eng.Global,
-                        new Objects.JSBannedUser(eng.Object.InstancePrototype, x, eng.UserData as string)));
+                        new Objects.JSBannedUser(eng.Object.InstancePrototype, x, eng.GetGlobalValue("UserData").ToString())));
                 }
                 catch { }
             }
@@ -102,7 +101,7 @@ namespace scripting.Statics
                 try
                 {
                     Server.Users.Records(x => function.Call(eng.Global,
-                        new Objects.JSRecord(eng.Object.InstancePrototype, x, eng.UserData as string)));
+                        new Objects.JSRecord(eng.Object.InstancePrototype, x, eng.GetGlobalValue("UserData").ToString())));
                 }
                 catch { }
             }

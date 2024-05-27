@@ -34,7 +34,7 @@ namespace scripting.Objects
         {
             this.PopulateFunctions();
 
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("ChannelCollection", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("ChannelCollection", PropertyAttributes.Sealed), true);
         }
 
         public JSChannelCollection(ObjectInstance prototype, JSChannel[] items, String scriptName)

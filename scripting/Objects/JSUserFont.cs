@@ -42,7 +42,7 @@ namespace scripting.Objects
         {
             this.PopulateFunctions();
 
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("UserFont", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("UserFont", PropertyAttributes.Sealed), true);
         }
 
         [JSProperty(Name = "enabled")]

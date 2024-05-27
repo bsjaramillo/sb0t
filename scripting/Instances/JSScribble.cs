@@ -25,7 +25,6 @@ using Jurassic.Library;
 
 namespace scripting.Instances
 {
-    [JSObject(Name = "Scribble")]
     class JSScribble : ClrFunction
     {
         public JSScribble(ScriptEngine engine)

@@ -26,7 +26,6 @@ using Jurassic.Library;
 
 namespace scripting.Statics
 {
-    [JSObject(Name = "File")]
     class JSFile : ObjectInstance
     {
         public JSFile(ScriptEngine engine)
@@ -34,7 +33,7 @@ namespace scripting.Statics
         {
             this.PopulateFunctions();
 
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("File", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("File", PropertyAttributes.Sealed), true);
         }
 
         private static String[] bad_chars_script = new String[]
@@ -54,7 +53,7 @@ namespace scripting.Statics
 
                 if (filename.Length > 1 && bad_chars_script.Count<String>(x => filename.Contains(x)) == 0)
                 {
-                    String path = Path.Combine(Server.DataPath, eng.UserData as string, "data", filename);
+                    String path = Path.Combine(Server.DataPath, eng.GetGlobalValue("UserData").ToString(), "data", filename);
 
                     try
                     {
@@ -82,7 +81,7 @@ namespace scripting.Statics
                 if (filename.Length > 1)
                     if (bad_chars_script.Count<String>(x => filename.Contains(x)) == 0)
                     {
-                        String path = Path.Combine(Server.DataPath, eng.UserData as string, "data", filename);
+                        String path = Path.Combine(Server.DataPath, eng.GetGlobalValue("UserData").ToString(), "data", filename);
 
                         try
                         {
@@ -109,12 +108,12 @@ namespace scripting.Statics
                 {
                     try
                     {
-                        String path = Path.Combine(Server.DataPath, eng.UserData as string, "data");
+                        String path = Path.Combine(Server.DataPath, eng.GetGlobalValue("UserData").ToString(), "data");
 
                         if (!Directory.Exists(path))
                             Directory.CreateDirectory(path);
 
-                        path = Path.Combine(Server.DataPath, eng.UserData as string, "data", file);
+                        path = Path.Combine(Server.DataPath, eng.GetGlobalValue("UserData").ToString(), "data", file);
                         File.WriteAllText(path, content, Encoding.UTF8);
                         return true;
                     }
@@ -131,7 +130,7 @@ namespace scripting.Statics
                 return false;
 
             String file = a.ToString();
-            String script = eng.UserData as string;
+            String script =  eng.GetGlobalValue("UserData").ToString();
             String content = b.ToString();
 
             if (file.Length > 1)
@@ -139,12 +138,12 @@ namespace scripting.Statics
                 {
                     try
                     {
-                        String path = Path.Combine(Server.DataPath, eng.UserData as string, "data");
+                        String path = Path.Combine(Server.DataPath, eng.GetGlobalValue("UserData").ToString(), "data");
 
                         if (!Directory.Exists(path))
                             Directory.CreateDirectory(path);
 
-                        path = Path.Combine(Server.DataPath, eng.UserData as string, "data", file);
+                        path = Path.Combine(Server.DataPath, eng.GetGlobalValue("UserData").ToString(), "data", file);
 
                         using (StreamWriter stream = File.Exists(path) ? File.AppendText(path) : File.CreateText(path))
                             stream.Write(content);
@@ -164,19 +163,19 @@ namespace scripting.Statics
                 return false;
 
             String file = a.ToString();
-            String script = eng.UserData as string;
+            String script = eng.GetGlobalValue("UserData").ToString();
             String content = b.ToString();
 
             if (file.Length > 1 && bad_chars_script.Count<String>(x => file.Contains(x)) == 0)
             {
                 try
                 {
-                    String path = Path.Combine(Server.DataPath, eng.UserData as string, "data");
+                    String path = Path.Combine(Server.DataPath, eng.GetGlobalValue("UserData").ToString(), "data");
 
                     if (!Directory.Exists(path))
                         Directory.CreateDirectory(path);
 
-                    path = Path.Combine(Server.DataPath, eng.UserData as string, "data", file);
+                    path = Path.Combine(Server.DataPath, eng.GetGlobalValue("UserData").ToString(), "data", file);
 
                     // Agregar el contenido a una nueva línea
                     content = content.TrimEnd('\r', '\n') + "\n";
@@ -198,12 +197,12 @@ namespace scripting.Statics
             if (a is String || a is ConcatenatedString)
             {
                 String file = a.ToString();
-                String script = eng.UserData as string;
+                String script = eng.GetGlobalValue("UserData").ToString();
 
                 if (file.Length > 1)
                     if (bad_chars_script.Count<String>(x => file.Contains(x)) == 0)
                     {
-                        String path = Path.Combine(Server.DataPath, eng.UserData as string, "data", file);
+                        String path = Path.Combine(Server.DataPath, eng.GetGlobalValue("UserData").ToString(), "data", file);
 
                         try
                         {

@@ -45,7 +45,7 @@ namespace scripting.Objects
             this.ScriptName = script;
             this._font = new JSUserFont(this.Prototype, user, script);
 
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("User", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("User", PropertyAttributes.Sealed), true);
         }
 
         internal IUser parent;

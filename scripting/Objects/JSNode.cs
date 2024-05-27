@@ -36,7 +36,7 @@ namespace scripting.Objects
             this.Item = node;
             this.PopulateFunctions();
 
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("Node", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("Node", PropertyAttributes.Sealed), true);
         }
         
         internal JSNode(ScriptEngine eng)

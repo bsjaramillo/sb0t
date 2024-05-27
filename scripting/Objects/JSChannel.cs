@@ -42,7 +42,7 @@ namespace scripting.Objects
             this.Item = item;
             this.PopulateFunctions();
 
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("Channel", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("Channel", PropertyAttributes.Sealed), true);
         }
 
         [JSProperty(Name = "hashlink")]

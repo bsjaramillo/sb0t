@@ -25,7 +25,6 @@ using Jurassic.Library;
 
 namespace scripting.Instances
 {
-    [JSObject(Name = "Timer")]
     class JSTimer : ClrFunction
     {
         public JSTimer(ScriptEngine engine)

@@ -26,7 +26,6 @@ using Jurassic.Library;
 
 namespace scripting.ObjectPrototypes
 {
-    [JSObject(Name = "ProxyCheckResult")]
     class JSProxyCheckResult : ClrFunction
     {
         public JSProxyCheckResult(ScriptEngine eng)

@@ -20,8 +20,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 
 namespace iconnect
 {
@@ -130,9 +128,5 @@ namespace iconnect
         void LeafParted(ILeaf leaf);
         /// <summary>Server Event</summary>
         void LinkedAdminDisabled(ILeaf leaf, IUser client);
-        /// <summary>Icon</summary>
-        BitmapSource Icon { get; }
-        /// <summary>GUI</summary>
-        UserControl GUI { get; }
     }
 }

@@ -50,7 +50,7 @@ namespace scripting.Objects
         {
             this.PopulateFunctions();
 
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("NodeAttributes", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("NodeAttributes", PropertyAttributes.Sealed), true);
         }
 
         [JSProperty(Name = "length")]

@@ -39,7 +39,7 @@ namespace scripting.Objects
         {
             this.PopulateFunctions();
 
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("HttpRequestResult", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("HttpRequestResult", PropertyAttributes.Sealed), true);
         }
 
         public String Data { get; set; }

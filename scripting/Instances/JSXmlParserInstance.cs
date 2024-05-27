@@ -38,7 +38,7 @@ namespace scripting.Instances
             this.DOC = new XmlDocument();
             this.PopulateFunctions();
 
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("XmlParser", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("XmlParser", PropertyAttributes.Sealed), true);
         }
 
         [JSProperty(Name = "available")]

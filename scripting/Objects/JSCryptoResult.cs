@@ -41,7 +41,7 @@ namespace scripting.Objects
         {
             this.PopulateFunctions();
 
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("CryptoResult", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("CryptoResult", PropertyAttributes.Sealed), true);
         }
 
         [JSFunction(Name = "toHex", IsWritable = false, IsEnumerable = true)]

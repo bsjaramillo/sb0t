@@ -35,7 +35,7 @@ namespace scripting.Objects
         {
             this.PopulateFunctions();
 
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("HashlinkResult", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("HashlinkResult", PropertyAttributes.Sealed), true);
         }
 
         public JSHashlinkResult(ObjectInstance prototype, IHashlinkRoom obj)

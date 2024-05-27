@@ -25,7 +25,6 @@ using Jurassic.Library;
 
 namespace scripting.ObjectPrototypes
 {
-    [JSObject(Name = "PM")]
     class JSPM : ClrFunction
     {
         public JSPM(ScriptEngine eng)

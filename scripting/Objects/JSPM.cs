@@ -36,7 +36,7 @@ namespace scripting.Objects
             this._PM = pm;
             this.PopulateFunctions();
 
-            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("PM", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("PM", PropertyAttributes.Sealed), true);
         }
 
         internal JSPM(ScriptEngine eng)
