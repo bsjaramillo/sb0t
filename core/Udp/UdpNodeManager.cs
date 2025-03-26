@@ -151,7 +151,7 @@ namespace core.Udp
             return false;
         }
 
-        private static void LoadDefaultList()
+       /* private static void LoadDefaultList()
         {
             Nodes = new List<UdpNode>();
 
@@ -163,7 +163,7 @@ namespace core.Udp
 
 
             // TODO(stuart) find a better way of accomplishing this, so we don't end up with a list of empty nodes...
-            /*using (FileStream fs = new FileStream("servers.dat", FileMode.Open, FileAccess.Read))
+            using (FileStream fs = new FileStream("servers.dat", FileMode.Open, FileAccess.Read))
             {
                 byte[] buffer = new byte[6];
 
@@ -174,10 +174,63 @@ namespace core.Udp
                     node.Port = BitConverter.ToUInt16(buffer.ToArray(), 4);
                     Nodes.Add(node);
                 }
-            }*/
+            }
 
             ServerCore.Log("default node list loaded");
-        }
+        } */
+
+         private static void LoadDefaultList()
+ {
+     Nodes = new List<UdpNode>();
+     string endpointUrl = "http://sbotsb0t.ddns.net/nodes";
+     // nueva api para obtener nodos. utilizar la misma logica que ares para obtener nodos.
+     // para lista de canales usar http://sbotsb0t.ddns.net/channels
+     try
+     {
+         using (HttpClient client = new HttpClient())
+         {
+             // Realizamos una solicitud GET al endpoint
+             HttpResponseMessage response = client.GetAsync(endpointUrl).Result; // Bloqueo sincrónico
+             response.EnsureSuccessStatusCode();
+
+             // Leer la respuesta como JSON
+             string jsonResponse = response.Content.ReadAsStringAsync().Result; // Bloqueo sincrónico
+             var rawNodeList = Newtonsoft.Json.JsonConvert.DeserializeObject<List<RawUdpNode>>(jsonResponse);
+
+             // Convertir RawUdpNode a UdpNode y agregar a la lista
+             if (rawNodeList != null)
+             {
+                 foreach (var rawNode in rawNodeList)
+                 {
+                     if (!string.IsNullOrEmpty(rawNode.IP) && rawNode.Port > 0)
+                     {
+                         // Convertir la IP de string a IPAddress
+                         if (IPAddress.TryParse(rawNode.IP, out IPAddress parsedIP))
+                         {
+                             Nodes.Add(new UdpNode { IP = parsedIP, Port = (ushort)rawNode.Port });
+
+                         }
+                     }
+                 }
+             }
+         }
+
+         ServerCore.Log("Node list loaded from endpoint successfully");
+     }
+     catch (Exception ex)
+     {
+         ServerCore.Log($"Error loading node list: {ex.Message}");
+     }
+ }
+
+ // Clase para deserializar el JSON
+ public class RawUdpNode
+ {
+     public string IP { get; set; }
+     public int Port { get; set; }
+ }
+
+        
 
         public static UdpNode toUdpNode(String ip, ushort port)
         {
