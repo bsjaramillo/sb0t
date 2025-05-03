@@ -40,7 +40,7 @@ namespace scripting.Instances
         {
             this.PopulateFunctions();
 
-            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("Scribble", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("Scribble", PropertyAttributes.Sealed), true);
         }
 
         [JSProperty(Name = "src")]
@@ -67,7 +67,7 @@ namespace scripting.Instances
                 {
                     Callback = this.Callback,
                     Data = null,
-                    ScriptName = this.Engine.GetGlobalValue("UserData").ToString(),
+                    ScriptName = this.Engine.UserData as string,
                     Arg = arg,
                     URL = this.Source
                 };
@@ -156,7 +156,7 @@ namespace scripting.Instances
                 if (filename.Length > 1)
                     if (bad_chars.Count<String>(x => filename.Contains(x)) == 0)
                     {
-                        String path = Path.Combine(Server.DataPath, this.Engine.GetGlobalValue("UserData").ToString(), "data", filename);
+                        String path = Path.Combine(Server.DataPath, this.Engine.UserData as string, "data", filename);
 
                         try
                         {

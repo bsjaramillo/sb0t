@@ -28,6 +28,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Windows.Shapes;
 using System.IO;
 using System.Net;
 using System.Diagnostics;
@@ -35,7 +36,6 @@ using System.Threading;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
 using core;
-using Hardcodet.Wpf.TaskbarNotification;
 
 namespace gui
 {
@@ -50,7 +50,7 @@ namespace gui
         private ServerCore server { get; set; }
 
         private OpenFileDialog fd = new OpenFileDialog();
-        private TaskbarIcon notify;
+        private System.Windows.Forms.NotifyIcon notify;
         private bool _hidden = false;
 
         private static Mutex mutex;
@@ -85,11 +85,11 @@ namespace gui
             this.InitializeComponent();
             this.server = new ServerCore();
             ServerCore.LogUpdate += this.LogUpdate;
-            this.notify = new TaskbarIcon();
-            this.notify.Name = "sb0t";
+            this.notify = new System.Windows.Forms.NotifyIcon();
+            this.notify.Text = "sb0t";
             this.notify.Icon = Resource1.mains;
-            this.notify.TrayLeftMouseUp += this.NotifyIconClicked;
-            this.notify.Visibility = Visibility.Visible;
+            this.notify.Click += new EventHandler(this.NotifyIconClicked);
+            this.notify.Visible = true;
             GUILabels.Setup(this);
         }
 
@@ -385,31 +385,10 @@ namespace gui
         {
             try
             {
-                string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "sb0t");
-                string fileName = AppDomain.CurrentDomain.FriendlyName; // May need modification if it contains file extension
-                string fullPath = Path.Combine(folderPath, fileName);
-                System.Diagnostics.Debug.WriteLine(fullPath);
-
-                if (Directory.Exists(folderPath))
-                {
-                    ProcessStartInfo psi = new ProcessStartInfo
-                    {
-                        FileName = folderPath,
-                        UseShellExecute = true,
-                        Verb = "open"
-                    };
-
-                    Process.Start(psi);
-                }
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine("Folder does not exist.");
-                }
+                Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
+                    "\\sb0t\\" + AppDomain.CurrentDomain.FriendlyName);
             }
-            catch(Exception err) {
-                System.Diagnostics.Debug.WriteLine(err);
-
-            }
+            catch { }
         }
 
         private void button3_Click(object sender, RoutedEventArgs e) // ares join
@@ -631,7 +610,7 @@ namespace gui
 
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
-            this.notify.Visibility = Visibility.Collapsed;
+            this.notify.Visible = false;
         }
 
         private void Window_StateChanged(object sender, EventArgs e)

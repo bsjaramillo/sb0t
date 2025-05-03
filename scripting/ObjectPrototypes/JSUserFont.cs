@@ -25,6 +25,7 @@ using Jurassic.Library;
 
 namespace scripting.ObjectPrototypes
 {
+    [JSObject(Name = "UserFont")]
     class JSUserFont : ClrFunction
     {
         public JSUserFont(ScriptEngine eng)

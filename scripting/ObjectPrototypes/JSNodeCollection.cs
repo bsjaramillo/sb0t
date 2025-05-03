@@ -25,6 +25,7 @@ using Jurassic.Library;
 
 namespace scripting.ObjectPrototypes
 {
+    [JSObject(Name = "NodeCollection")]
     class JSNodeCollection : ClrFunction
     {
         public JSNodeCollection(ScriptEngine eng)

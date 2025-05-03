@@ -25,6 +25,7 @@ using Jurassic.Library;
 
 namespace scripting.ObjectPrototypes
 {
+    [JSObject(Name = "HashlinkResult")]
     class JSHashlinkResult : ClrFunction
     {
         public JSHashlinkResult(ScriptEngine eng)

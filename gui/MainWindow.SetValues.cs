@@ -345,7 +345,11 @@ namespace gui
                 StackPanel stack = new StackPanel();
                 stack.Orientation = Orientation.Horizontal;
                 Image img = new Image();
-                img.Source = new BitmapImage(new Uri("pack://application:,,/Images/plugin.png"));
+
+                if (fe.Icon != null)
+                    img.Source = fe.Icon;
+                else
+                    img.Source = new BitmapImage(new Uri("pack://application:,,/Images/plugin.png"));
 
                 img.Height = 16;
                 img.Width = 16;
@@ -358,6 +362,16 @@ namespace gui
                 stack.Children.Add(tb);
                 stack.Tag = name;
                 this.listBox2.Items.Add(stack);
+
+                if (fe.GUI != null)
+                {
+                    fe.GUI.Tag = name;
+                    gui_host.Children.Add(fe.GUI);
+                    fe.GUI.Height = 343;
+                    fe.GUI.Width = 416;
+                    fe.GUI.Margin = new Thickness(166, 0, 0, 0);
+                }
+
                 this.listBox2.SelectedIndex = this.listBox2.Items.Count - 1;
                 ExtAutorun.AddItem(name);
             }

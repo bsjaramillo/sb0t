@@ -38,7 +38,7 @@ namespace scripting.Objects
             foreach (String str in items)
                 this.SetPropertyValue((uint)this.count++, str, throwOnError: true);
 
-            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("SpellingSuggestionCollection", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("SpellingSuggestionCollection", PropertyAttributes.Sealed), true);
         }
 
         internal JSSpellingSuggestionCollection(ScriptEngine eng)

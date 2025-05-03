@@ -67,7 +67,7 @@ namespace scripting.Objects
         {
             this.PopulateFunctions();
 
-            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("ProxyCheckResult", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("ProxyCheckResult", PropertyAttributes.Sealed), true);
         }
     }
 }

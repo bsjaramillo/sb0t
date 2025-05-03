@@ -38,7 +38,7 @@ namespace scripting.Objects
             foreach (String str in keys)
                 this.SetPropertyValue((uint)this.count++, str, throwOnError: true);
 
-            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("RegistryKeyCollection", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("RegistryKeyCollection", PropertyAttributes.Sealed), true);
         }
 
         internal JSRegistryKeyCollection(ScriptEngine eng)

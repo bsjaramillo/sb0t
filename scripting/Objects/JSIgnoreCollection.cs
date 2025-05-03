@@ -34,7 +34,7 @@ namespace scripting.Objects
         {
             this.PopulateFunctions();
 
-            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("IgnoreCollection", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("IgnoreCollection", PropertyAttributes.Sealed), true);
         }
 
         public JSIgnoreCollection(ObjectInstance prototype, String[] ignores, String scriptName)

@@ -37,7 +37,7 @@ namespace scripting.Instances
         {
             this.PopulateFunctions();
 
-            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("Sql", Jurassic.Library.PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("Sql", Jurassic.Library.PropertyAttributes.Sealed), true);
         }
 
         private String ConnectionString { get; set; }
@@ -167,7 +167,7 @@ namespace scripting.Instances
             if (file.Length > 1)
                 if (bad_chars.Count<String>(x => file.Contains(x)) == 0)
                 {
-                    String path = Path.Combine(Server.DataPath, this.Engine.GetGlobalValue("UserData").ToString(), "sql");
+                    String path = Path.Combine(Server.DataPath, this.Engine.UserData as string, "sql");
 
                     try
                     {

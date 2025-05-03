@@ -36,8 +36,6 @@ namespace scripting
             "\\",
             " ",
         };
-        public static ScriptEngine eng;
-
 
         [JSFunction(Name = "tickCount")]
         public static double TickCount()
@@ -76,13 +74,13 @@ namespace scripting
         }
 
         [JSFunction(Name = "scriptName", Flags = JSFunctionFlags.HasEngineParameter)]
-        public static String ScriptName()
+        public static String ScriptName(ScriptEngine eng)
         {
-            return (string)eng.GetGlobalValue("name");
+            return eng.UserData as string;
         }
 
         [JSFunction(Name = "include", Flags = JSFunctionFlags.HasEngineParameter)]
-        public static void Include(object a)
+        public static void Include(ScriptEngine eng, object a)
         {
             if (!(a is Undefined))
             {
@@ -92,7 +90,7 @@ namespace scripting
                     if (bad_chars.Count<String>(x => filename.Contains(x)) == 0)
                         try
                         {
-                            String path = Path.Combine(Server.DataPath, eng.GetGlobalValue("UserData").ToString(), filename);
+                            String path = Path.Combine(Server.DataPath, eng.UserData as string, filename);
                             eng.ExecuteFile(path);
                         }
                         catch (Jurassic.JavaScriptException e)
@@ -104,15 +102,15 @@ namespace scripting
         }
 
         [JSFunction(Name = "includeAll", Flags = JSFunctionFlags.HasEngineParameter)]
-        public static void IncludeAll()
+        public static void IncludeAll(ScriptEngine eng)
         {
-            DirectoryInfo directory = new DirectoryInfo(Path.Combine(Server.DataPath, eng.GetGlobalValue("UserData").ToString()));
+            DirectoryInfo directory = new DirectoryInfo(Path.Combine(Server.DataPath, eng.UserData as string));
             FileInfo[] files = directory.GetFiles("*.js");
-            String main = ScriptName();
+            String main = ScriptName(eng);
 
             foreach (FileInfo file in files)
                 if (file.Name != main)
-                    Include(file.Name);
+                    Include(eng, file.Name);
         }
 
         [JSFunction(Name = "byteLength")]
@@ -134,12 +132,12 @@ namespace scripting
         }
 
         [JSFunction(Name = "user", Flags = JSFunctionFlags.HasEngineParameter)]
-        public static Objects.JSUser User(object a)
+        public static Objects.JSUser User(ScriptEngine eng, object a)
         {
             if (a is Null)
                 return null;
 
-            JSScript script = ScriptManager.Scripts.Find(x => x.ScriptName == eng.GetGlobalValue("UserData").ToString());
+            JSScript script = ScriptManager.Scripts.Find(x => x.ScriptName == eng.UserData as string);
 
             if (script == null)
                 return null;

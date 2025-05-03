@@ -39,7 +39,7 @@ namespace scripting.Instances
         {
             this.PopulateFunctions();
 
-            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("ProxyCheck", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("ProxyCheck", PropertyAttributes.Sealed), true);
         }
 
         public JSProxyCheckInstance(ObjectInstance prototype, string apiKey) 
@@ -49,7 +49,7 @@ namespace scripting.Instances
 
             this.apiKey = apiKey;
 
-            DefineProperty(Engine.Symbol.ToString, new PropertyDescriptor("ProxyCheck", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("ProxyCheck", PropertyAttributes.Sealed), true);
         }
 
         [JSProperty(Name = "includeVPN", IsEnumerable = true)]
@@ -93,7 +93,7 @@ namespace scripting.Instances
                         jsonResponse)
                     {
                         Callback = jsDelegate,
-                        ScriptName = this.Engine.GetGlobalValue("UserData").ToString(),
+                        ScriptName = this.Engine.UserData as string,
                         User = user
                     };
 

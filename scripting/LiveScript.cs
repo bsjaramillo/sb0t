@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Linq;
@@ -84,29 +84,20 @@ namespace scripting
         {
             String urlZipRelease = "";
             ManualResetEvent threadCompletedEvent = new ManualResetEvent(false);
-            Server.Print("Starting download of the script from: "+path);
+            Server.Print("Starting download of the script from: " + path);
             new Thread(new ThreadStart(() =>
             {
                 try
                 {
-                    WebRequest request = WebRequest.Create(String.Format("{0}/repos/{1}/releases/latest",liveScriptsEndpoint ,path));
-                    request.Headers.Set("Accept", "application/vnd.github+json");
-                    request.Headers.Set("X-GitHub-Api-Version", "2022-11-28");
-                    request.Headers.Set("User-Agent", "sb0t-server");
-                    using (WebResponse response = request.GetResponse())
-                    using (Stream stream = response.GetResponseStream())
+                 
+                    using (WebClient client = new WebClient())
                     {
-                        List<byte> receiver = new List<byte>();
-                        byte[] buf = new byte[1024];
-                        int size = 0;
-
-                        while ((size = stream.Read(buf, 0, 1024)) > 0)
-                            receiver.AddRange(buf.Take(size));
-
-                        buf = receiver.ToArray();
-                        String received = Encoding.Default.GetString(buf);
-                        GitHubRelease releaseResponse= JsonConvert.DeserializeObject<GitHubRelease>(received);
-                        urlZipRelease= releaseResponse.ZipballUrl;
+                        client.Headers.Add("User-Agent", "sb0t-sever-v5.43.3"); // Obligatorio para GitHub
+                        client.Headers.Add("Accept", "application/vnd.github+json");
+                        client.Headers.Add("X-GitHub-Api-Version", "2022-11-28");
+                        String received = client.DownloadString(String.Format("{0}/repos/{1}/releases/latest", liveScriptsEndpoint, path));
+                        GitHubRelease releaseResponse = JsonConvert.DeserializeObject<GitHubRelease>(received);
+                        urlZipRelease = releaseResponse.ZipballUrl;
                     }
                 }
                 catch
@@ -130,51 +121,52 @@ namespace scripting
                 else
                 {
                     String filename = path.Split('/')[1];
-                    Download(urlZipRelease, filename,path);
+                    Download(urlZipRelease, filename, path);
                 }
             }
             else
                 items.Enqueue(new LiveScriptItem
-                    {
-                        Type = ListScriptReceiveType.Failed,
-                        Args = path
-                    });
+                {
+                    Type = ListScriptReceiveType.Failed,
+                    Args = path
+                });
         }
 
-        public static void Download(String url,String filename,String pathScript)
+        public static void Download(String url, String filename, String pathScript)
         {
             new Thread(new ThreadStart(() =>
             {
                 try
                 {
-                    WebRequest request = WebRequest.Create(url);
-                    request.Headers.Set("Accept", "application/vnd.github+json");
-                    request.Headers.Set("X-GitHub-Api-Version", "2022-11-28");
-                    request.Headers.Set("User-Agent", "sb0t-server");
-                    using (WebResponse response = request.GetResponse())
-                    using (Stream stream = response.GetResponseStream())
-                    using(ZipArchive zipArchive = new ZipArchive(stream,ZipArchiveMode.Read))
+                    using (WebClient client = new WebClient())
+                    {
+                        client.Headers.Add("User-Agent", "sb0t-sever-v5.43.3"); // Obligatorio para GitHub
+                        client.Headers.Add("Accept", "application/vnd.github+json");
+                        client.Headers.Add("X-GitHub-Api-Version", "2022-11-28");
+                        using (Stream stream = client.OpenRead(url))
+                        using (ZipArchive zipArchive = new ZipArchive(stream, ZipArchiveMode.Read))
                     {
                         String path = Path.Combine(Server.DataPath, filename);
-                            int index = ScriptManager.Scripts.FindIndex(x => x.ScriptName == filename + ".js");
-                            if (index > 0)
-                            {
-                                ScriptManager.Scripts[index].KillScript();
-                                ScriptManager.Scripts.RemoveAt(index);
-                            }
+                        int index = ScriptManager.Scripts.FindIndex(x => x.ScriptName == filename + ".js");
+                        if (index > 0)
+                        {
+                            ScriptManager.Scripts[index].KillScript();
+                            ScriptManager.Scripts.RemoveAt(index);
+                        }
 
-                            if (Directory.Exists(path + ".js"))
-                                Directory.Delete(path + ".js", true);
+                        if (Directory.Exists(path + ".js"))
+                            Directory.Delete(path + ".js", true);
                         ZipArchiveEntry content = zipArchive.Entries.First();
-                        String responsePath = Path.Combine(Server.DataPath, content.FullName.Replace("/",""));
+                        String responsePath = Path.Combine(Server.DataPath, content.FullName.Replace("/", ""));
                         zipArchive.ExtractToDirectory(Server.DataPath);
-                            Directory.Move(responsePath, path + ".js");
-                            items.Enqueue(new LiveScriptItem
-                            {
-                                Type = ListScriptReceiveType.ReadyLoad,
-                                Args = filename + ".js"
-                            });                            
-                        }   
+                        Directory.Move(responsePath, path + ".js");
+                        items.Enqueue(new LiveScriptItem
+                        {
+                            Type = ListScriptReceiveType.ReadyLoad,
+                            Args = filename + ".js"
+                        });
+                    }
+                }
                 }
                 catch (Exception e)
                 {
@@ -194,23 +186,14 @@ namespace scripting
             {
                 try
                 {
-                    WebRequest request = WebRequest.Create(String.Format("{0}/search/repositories?q=topic:areschatscript+is:public", liveScriptsEndpoint));
-                    request.Headers.Set("Accept", "application/vnd.github+json");
-                    request.Headers.Set("X-GitHub-Api-Version", "2022-11-28");
-                    request.Headers.Set("User-Agent","sb0t-server");
-                    using (WebResponse response = request.GetResponse())
-                    using (Stream stream = response.GetResponseStream())
+                    using (WebClient client = new WebClient())
                     {
-                        List<byte> receiver = new List<byte>();
-                        byte[] buf = new byte[1024];
-                        int size = 0;
-                        while ((size = stream.Read(buf, 0, 1024)) > 0)
-                            receiver.AddRange(buf.Take(size));
-
-                        buf = receiver.ToArray();
-                        String result = Encoding.Default.GetString(buf);
+                        client.Headers.Add("User-Agent", "sb0t-sever-v5.43.3"); // Obligatorio para GitHub
+                        client.Headers.Add("Accept", "application/vnd.github+json");
+                        client.Headers.Add("X-GitHub-Api-Version", "2022-11-28");
+                        String result = client.DownloadString(String.Format("{0}/search/repositories?q=topic:areschatscript+is:public", liveScriptsEndpoint));
                         GitHubSearchResponse apiResponse = JsonConvert.DeserializeObject<GitHubSearchResponse>(result);
-                        if (apiResponse!=null)
+                        if (apiResponse != null)
                         {
                             if (apiResponse.Items.Count == 0)
                                 target.Print("No scripts available");

@@ -16,6 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+﻿using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using iconnect;
 
 namespace scripting
@@ -26,6 +28,9 @@ namespace scripting
         {
             Server.SetCallback(cb);
         }
+
+        public BitmapSource Icon { get { return null; } }
+        public UserControl GUI { get { return null; } }
         public void Dispose() { }
         public void Load() { }
         public void UnhandledProtocol(IUser client, bool custom, byte msg, byte[] packet) { }

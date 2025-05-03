@@ -36,7 +36,7 @@ namespace scripting.Objects
         {
             this.PopulateFunctions();
 
-            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("NodeCollection", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("NodeCollection", PropertyAttributes.Sealed), true);
         }
 
         public JSNodeCollection(ObjectInstance prototype, XmlNodeList list)

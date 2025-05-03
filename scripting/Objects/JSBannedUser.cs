@@ -43,7 +43,7 @@ namespace scripting.Objects
         {
             this.PopulateFunctions();
 
-            DefineProperty(Engine.Symbol.ToString(), new PropertyDescriptor("BannedUser", PropertyAttributes.Sealed), true);
+            DefineProperty(Engine.Symbol.ToStringTag, new PropertyDescriptor("BannedUser", PropertyAttributes.Sealed), true);
         }
 
         internal IBan parent;

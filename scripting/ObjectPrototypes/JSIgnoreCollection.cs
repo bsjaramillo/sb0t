@@ -25,6 +25,7 @@ using Jurassic.Library;
 
 namespace scripting.ObjectPrototypes
 {
+    [JSObject(Name = "IgnoreCollection")]
     class JSIgnoreCollection : ClrFunction
     {
         public JSIgnoreCollection(ScriptEngine eng)

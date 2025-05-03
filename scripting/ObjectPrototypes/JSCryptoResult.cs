@@ -25,6 +25,7 @@ using Jurassic.Library;
 
 namespace scripting.ObjectPrototypes
 {
+    [JSObject(Name = "CryptoResult")]
     class JSCryptoResult : ClrFunction
     {
         public JSCryptoResult(ScriptEngine eng)

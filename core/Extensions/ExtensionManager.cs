@@ -22,6 +22,8 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.IO;
 using System.Reflection;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using iconnect;
 
 namespace core.Extensions
@@ -77,6 +79,8 @@ namespace core.Extensions
 
                     return new ExtensionFrontEnd
                     {
+                        GUI = list[p.Name].Plugin.GUI,
+                        Icon = list[p.Name].Plugin.Icon,
                         Name = list[p.Name].Name
                     };
                 }
@@ -107,6 +111,8 @@ namespace core.Extensions
 
     public class ExtensionFrontEnd
     {
+        public UserControl GUI { get; set; }
+        public BitmapSource Icon { get; set; }
         public String Name { get; set; }
     }
 }

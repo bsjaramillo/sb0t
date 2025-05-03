@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,12 +25,13 @@ using Jurassic.Library;
 
 namespace scripting.Instances
 {
+    [JSObject(Name = "Avatar")]
     class JSAvatar : ClrFunction
     {
         public JSAvatar(ScriptEngine engine)
             : base(engine.Function.InstancePrototype, "Avatar", new JSAvatarInstance(engine.Object.InstancePrototype))
         {
-
+            
         }
 
         [JSConstructorFunction]
