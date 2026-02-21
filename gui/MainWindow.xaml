@@ -238,6 +238,47 @@
                     </Border>
                 </Grid>
             </TabItem>
+            <TabItem Name="proxy" Width="75">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Height="24">
+                            <Image.Source>
+                                <BitmapImage UriSource="Images/Link-icon.png" />
+                            </Image.Source>
+                        </Image>
+                        <TextBlock Text="Proxy" Margin="2,0,0,0" VerticalAlignment="Center" />
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,0,0">
+                        <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0">
+                            <Canvas.Background>
+                                <LinearGradientBrush StartPoint=".5,0" EndPoint=".5,1">
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop Color="LightSteelBlue" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Canvas.Background>
+                            <Rectangle Canvas.Left="20" Canvas.Top="29" Height="230" Width="540" Stroke="Silver" Name="rectangle12" />
+                            <Label Background="{x:Null}" Canvas.Left="30" Canvas.Top="15" Name="label28" Content="Trusted proxy IPs (localhost is always trusted)" />
+                            <ListBox Height="180" Name="listBoxTrustedProxies" Width="300" Canvas.Left="40" Canvas.Top="49">
+                                <ListBox.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Remove" Click="RemoveTrustedProxy_Click" />
+                                    </ContextMenu>
+                                </ListBox.ContextMenu>
+                            </ListBox>
+                            <Label Canvas.Left="370" Canvas.Top="49" Name="label29" Content="Proxy IP address:" />
+                            <TextBox Canvas.Left="370" Canvas.Top="77" Height="23" Name="textBoxProxyIP" Width="170" />
+                            <Button Canvas.Left="483" Canvas.Top="110" Height="23" Name="buttonAddProxy" Width="57" Content="Add" Click="buttonAddProxy_Click" Focusable="False" />
+                            <Label Canvas.Left="370" Canvas.Top="140" Foreground="Gray" FontSize="11" Content="Add the IP addresses of your" />
+                            <Label Canvas.Left="370" Canvas.Top="158" Foreground="Gray" FontSize="11" Content="reverse proxy servers here." />
+                            <Label Canvas.Left="370" Canvas.Top="176" Foreground="Gray" FontSize="11" Content="The server will read the" />
+                            <Label Canvas.Left="370" Canvas.Top="194" Foreground="Gray" FontSize="11" Content="X-Forwarded-For / X-Real-IP" />
+                            <Label Canvas.Left="370" Canvas.Top="212" Foreground="Gray" FontSize="11" Content="headers from trusted proxies." />
+                        </Canvas>
+                    </Border>
+                </Grid>
+            </TabItem>
             <TabItem Name="avatars" Width="79">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">

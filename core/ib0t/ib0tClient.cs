@@ -857,6 +857,9 @@ namespace core.ib0t
             }
             else
             {
+                String forwardedForIP = null;
+                String realIP = null;
+
                 while (this.data_in.CanTakeLine())
                 {
                     String str = this.data_in.TakeLine();
@@ -907,17 +910,63 @@ namespace core.ib0t
 
                         this.WebCredentials.Origin = str;
                     }
+                    else if (up.StartsWith("X-FORWARDED-FOR:"))
+                    {
+                        str = str.Substring(16);
+
+                        if (str.StartsWith(" "))
+                            str = str.Substring(1);
+
+                        forwardedForIP = str;
+                    }
+                    else if (up.StartsWith("X-REAL-IP:"))
+                    {
+                        str = str.Substring(10);
+
+                        if (str.StartsWith(" "))
+                            str = str.Substring(1);
+
+                        realIP = str;
+                    }
                     else if (String.IsNullOrEmpty(str.Trim()))
+                    {
+                        this.ApplyForwardedIP(realIP, forwardedForIP);
+
                         if (this.WebCredentials.Key1.Length > 0)
                         {
                             this.pending_keydata = true;
                             this.WebCredentials.OldProto = true;
                         }
                         else return true;
+                    }
                 }
             }
 
             return false;
+        }
+
+        private void ApplyForwardedIP(String realIP, String forwardedForIP)
+        {
+            IPAddress remoteAddr = ((IPEndPoint)this.Sock.RemoteEndPoint).Address;
+
+            if (!TrustedProxyManager.IsTrustedProxy(remoteAddr))
+                return;
+
+            IPAddress parsed;
+
+            if (!String.IsNullOrEmpty(realIP) && IPAddress.TryParse(realIP.Trim(), out parsed))
+            {
+                this.ExternalIP = parsed;
+                return;
+            }
+
+            if (!String.IsNullOrEmpty(forwardedForIP))
+            {
+                String first = forwardedForIP.Split(',')[0].Trim();
+
+                if (IPAddress.TryParse(first, out parsed))
+                    this.ExternalIP = parsed;
+            }
         }
 
         internal String NextMessage
