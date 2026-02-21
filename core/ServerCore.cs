@@ -252,6 +252,10 @@ namespace core
                 Socket sock = this.tcp.AcceptSocket();
                 Stream networkStream = new NetworkStream(sock);
                 Stream sslStream = new SslStream(networkStream);
+                // NOTE: When using a reverse proxy, this IP will be the proxy's IP, not the real client IP.
+                // The real client IP is resolved later during the WebSocket handshake
+                // by reading X-Forwarded-For/X-Real-IP headers in ib0tClient.LoadProtocol().
+                // Therefore, flood tracking here may record the proxy IP instead of the real client.
                 string ipAddress = ((IPEndPoint)sock.RemoteEndPoint).Address.ToString();
                 if (_connectFlood.ContainsKey(ipAddress))
                 {

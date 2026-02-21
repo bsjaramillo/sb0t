@@ -631,5 +631,37 @@ namespace gui
         {
             GUILabels.SetEnglish(this);
         }
+
+        private void buttonAddProxy_Click(object sender, RoutedEventArgs e)
+        {
+            string ip = this.textBoxProxyIP.Text.Trim();
+            if (String.IsNullOrEmpty(ip))
+                return;
+            System.Net.IPAddress parsed;
+            if (!System.Net.IPAddress.TryParse(ip, out parsed))
+            {
+                MessageBox.Show("Invalid IP address.", "sb0t", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            core.TrustedProxyManager.AddTrustedProxy(parsed.ToString());
+            this.textBoxProxyIP.Text = String.Empty;
+            this.RefreshTrustedProxies();
+        }
+
+        private void RemoveTrustedProxy_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.listBoxTrustedProxies.SelectedItem == null)
+                return;
+            string ip = this.listBoxTrustedProxies.SelectedItem.ToString();
+            core.TrustedProxyManager.RemoveTrustedProxy(ip);
+            this.RefreshTrustedProxies();
+        }
+
+        private void RefreshTrustedProxies()
+        {
+            this.listBoxTrustedProxies.Items.Clear();
+            foreach (string ip in core.TrustedProxyManager.GetTrustedProxies())
+                this.listBoxTrustedProxies.Items.Add(ip);
+        }
     }
 }
