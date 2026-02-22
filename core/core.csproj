@@ -367,6 +367,7 @@
     <Compile Include="TCPPacketWriter.cs" />
     <Compile Include="TCPProcessor.cs" />
     <Compile Include="Time.cs" />
+    <Compile Include="TrustedProxyManager.cs" />
     <Compile Include="Udp\FirewallTest.cs" />
     <Compile Include="Udp\MyFirewallTester.cs" />
     <Compile Include="Udp\SupabaseChatroomModel.cs" />
