@@ -29,6 +29,7 @@ using System.IO;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using core;
 
 namespace core.ib0t
 {
